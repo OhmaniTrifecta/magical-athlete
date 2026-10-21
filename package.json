@@ -1,0 +1,10 @@
+{
+  "name": "magical-athlete",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal digital version of Magical Athlete (static site, no build step)",
+  "scripts": {
+    "build": "echo Static site: nothing to build",
+    "start": "npx serve ."
+  }
+}

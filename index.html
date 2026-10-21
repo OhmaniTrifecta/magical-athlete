@@ -7,13 +7,13 @@ h1,h2,.hd{font-family:'Lilita One',sans-serif;letter-spacing:.03em}
 header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;flex-wrap:wrap;gap:8px}
 h1{margin:0;font-size:30px;color:var(--y);-webkit-text-stroke:1px var(--r)}
 #sc{display:flex;gap:10px}.pl{background:#2d2350;border-radius:12px;padding:6px 12px;border:3px solid var(--c)}.pl b{font-size:22px}
-#wrap{overflow-x:auto;padding:0 12px}
-#board{min-width:900px;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(4,70px);gap:4px;background:#000;border-radius:44px;padding:12px;border:4px solid #444}
+#wrap{overflow:hidden;padding:0 12px}
+#board{width:1100px;transform-origin:0 0;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(4,70px);gap:4px;background:#000;border-radius:44px;padding:12px;border:4px solid #444}
 .sq{border-radius:7px;display:flex;flex-wrap:wrap;align-content:flex-end;justify-content:center;position:relative;overflow:hidden;font:22px 'Lilita One';color:#fff}
 .sq small{position:absolute;top:2px;left:5px;font-size:15px;text-shadow:0 1px #0008}.sq svg{margin:0 -5px}
 .sq .ic{position:absolute;top:1px;width:100%;text-align:center;font-size:14px;color:#fff}
-.mid{grid-area:2/1/4/15;display:flex;align-items:center;justify-content:center;font:70px 'Lilita One';color:#fff;-webkit-text-stroke:3px #111;paint-order:stroke fill;border-radius:20px;background:linear-gradient(#000 60%,var(--gr) 61%)}
-.start{grid-area:1/1/2/4;background:var(--b);color:var(--r);font:italic 40px 'Lilita One';display:flex;align-items:center;justify-content:center;border-radius:30px 7px 7px 7px;position:relative}
+.mid{grid-area:2/2/4/15;display:flex;align-items:center;justify-content:center;font:62px 'Lilita One';color:#fff;-webkit-text-stroke:3px #111;paint-order:stroke fill;border-radius:20px;background:linear-gradient(#000 60%,var(--gr) 61%)}
+.start{flex-wrap:wrap;grid-area:1/1/2/4;background:var(--b);color:var(--r);font:italic 34px 'Lilita One';display:flex;align-items:center;justify-content:center;border-radius:30px 7px 7px 7px;position:relative}
 #ctl{display:flex;gap:24px;align-items:center;justify-content:center;padding:14px;flex-wrap:wrap}
 .scene{width:90px;height:90px;perspective:400px}.die{width:80px;height:80px;position:relative;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.2,.8,.3,1);margin:5px}
 .die i{position:absolute;inset:0;background:var(--dc);border-radius:14px;border:2px solid #0003;display:flex;align-items:center;justify-content:center;font:normal 52px 'Lilita One';backface-visibility:hidden}
@@ -26,10 +26,13 @@ button{font:20px 'Lilita One';background:var(--y);color:var(--ink);border:0;bord
 .card{width:170px;background:#fff8e8;color:var(--ink);border-radius:14px;padding:8px;border:5px solid var(--cc);transition:transform .25s;cursor:pointer;text-align:center;transform-style:preserve-3d}
 .card:hover{transform:rotateY(10deg) rotateX(-8deg) translateY(-8px);box-shadow:-8px 14px 18px #0007}
 .card .ch{font:22px 'Lilita One'}.art{border-radius:10px;padding:4px}.card i{font-size:11px;display:block;margin:4px 0}.card b{font:14px 'Lilita One';color:var(--r)}.card p{margin:3px 0;font-size:13px;font-weight:600}
+.fin{grid-area:2/1/4/2;background:repeating-conic-gradient(#fff 0 25%,#111 0 50%) 0 0/20px 20px;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font:15px 'Lilita One';text-align:center;text-shadow:0 0 3px #000,0 0 3px #000,0 0 6px #000;overflow:hidden}.fin div{display:flex;align-items:center;font-size:14px}
+#chips{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;padding:0 12px 8px}.cp{background:#2d2350;border-radius:10px;padding:3px 10px;font-size:14px;text-align:center;opacity:.6}.cp.cur{opacity:1;border:2px solid var(--y);background:#4a3a10}
+#pw{background:#9fd6ff;box-shadow:0 4px #2a6a9a}.box{max-height:94vh;overflow:auto}.card .ch{font-size:19px}
 </style></head><body>
 <header><h1>MAGICAL ATHLETE</h1><div id="sc"></div></header>
-<div id="wrap"><div id="board"></div></div>
-<section id="ctl"><div class="scene"><div class="die" id="die"></div></div><div id="info"></div><button id="roll" style="display:none"></button></section>
+<div id="chips"></div><div id="wrap"><div id="board"></div></div>
+<section id="ctl"><div class="scene"><div class="die" id="die"></div></div><div id="info"></div><button id="roll" style="display:none"></button><button id="pw" onclick="powers()">📖 Powers</button></section>
 <div id="strip"></div><ul id="log"></ul><div id="md"></div>
 <script>
 const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -52,60 +55,103 @@ lackey:{n:'Lackey',c:'#f5a31c',o:'#8a4a00',t:'If you’re happy, he’s happy.',
 loser:{n:'Loveable Loser',c:'#c9a0dc',o:'#5b2c7a',t:'Top of her class at Loser Academy. Which is bad.',p:'D’AWW',d:'At the start of my turn, I get 1 point chip if I’m alone in last place.',x:'<circle cx="14" cy="50" r="3.5" fill="#3af"/>'},
 cheer:{n:'Cheerleader',c:'#ff7ab8',o:'#a01c64',t:'A being of pure pep.',p:'RAH RAH',d:'At the start of my turn, I make the racers in last place move 2. If I do, I move 1.',x:'<circle cx="6" cy="62" r="8" fill="#ffe14a"/><circle cx="54" cy="62" r="8" fill="#ffe14a"/>'},
 inch:{n:'Inchworm',c:'#ff8fd0',o:'#6a2ea8',t:'Give her an inch and she’ll take an inch.',p:'WRIGGLE',d:'When another racer rolls a 1 for their main move, they skip that move and I move 1.',x:'<circle cx="30" cy="72" r="6" fill="#6a2ea8"/><circle cx="14" cy="78" r="5" fill="#6a2ea8"/>'},
-rocket:{n:'Rocket Scientist',c:'#e8e8f0',o:'#d33',t:'Moonlights as a brain surgeon.',p:'KABLOOEY',d:'I roll THEN decide whether to double my main move roll. When I do, I trip.',x:'<path d="M30-14L40 6H20z" fill="#d33"/>'}};
+rocket:{n:'Rocket Scientist',c:'#e8e8f0',o:'#d33',t:'Moonlights as a brain surgeon.',p:'KABLOOEY',d:'I roll THEN decide whether to double my main move roll. When I do, I trip.',x:'<path d="M30-14L40 6H20z" fill="#d33"/>'},baba:{n:'Baba Yaga',c:'#9c6bd6',o:'#3b1a66',t:'This property is going fast.',p:'LEG IT',d:'Trip any racer that stops on my space, or when I stop on theirs.',x:'<path d="M8 12Q30-20 52 12z" fill="#3b1a66"/>'},
+romantic:{n:'Romantic',c:'#ff9ec4',o:'#a0204a',t:'The last of her species.',p:'AH, LOVE!',d:'When anyone stops on a space with exactly one other racer, I move 2.',x:'<text x="19" y="2" font-size="20">❤</text>'},
+third:{n:'Third Wheel',c:'#7fd4c1',o:'#1c6a5a',t:'Searching for her throther half.',p:'ROLL THROUGH',d:'At the start of my turn, I can warp to any space with exactly 2 racers on it. I still get my main move after warping.',x:'<circle cx="30" cy="76" r="9" fill="none" stroke="#333" stroke-width="3"/>'},
+hypno:{n:'Hypnotist',c:'#6c5ce7',o:'#2a1a8a',t:'Implanted this false bio himself.',p:'HSSSSST',d:'At the start of my turn, I can warp a racer to my space.',x:'<circle cx="30" cy="-3" r="9" fill="none" stroke="#fff" stroke-width="3"/><circle cx="30" cy="-3" r="3" fill="#fff"/>'},
+flip:{n:'Flip Flop',c:'#d9a0f0',o:'#e8821f',t:'Ever searching for its lost twin.',p:'FLOP FLIP',d:'I can skip rolling for my main move and swap spaces with another racer instead.',x:'<path d="M30 58V88M20 88h20" stroke="#e8821f" stroke-width="4"/>'},
+magic:{n:'Magician',c:'#4a6cd4',o:'#1a2a6a',t:'He can also cast fireball.',p:'POOF',d:'I can reroll my main move up to two times.',x:'<path d="M18 10L26-14h8l8 24z" fill="#222"/><rect x="10" y="8" width="40" height="5" fill="#222"/>'},
+genius:{n:'Genius',c:'#ffe066',o:'#8a6d00',t:'And yet a fool in the ways of love.',p:'THINK GOOD',d:'I can predict what number I’ll roll for my main move. If I’m right, I take an extra turn.',x:'<circle cx="30" cy="-6" r="12" fill="#ffb3c7" stroke="#a03a5a" stroke-width="3"/>'},
+party:{n:'Party Animal',c:'#ff9f43',o:'#a04a00',t:'They put a hat on an animal and this happened.',p:'ANIMAL MAGNETISM',d:'At the start of my turn, all racers move 1 space towards me. Each other racer on my space gives me +1 to my main move.',x:'<path d="M30-16L18 8h24z" fill="#f4d"/><circle cx="30" cy="-16" r="4" fill="#ff0"/>'},
+stickler:{n:'Stickler',c:'#d0d0e0',o:'#445',t:'Proofread this rulebook without asking.',p:'ACTUALLY...',d:'Other racers can only cross the finish line by moving the exact amount they need. If they overshoot, they don’t move.',x:'<rect x="44" y="44" width="9" height="40" fill="#fc6" stroke="#333"/>'},
+blimp:{n:'Blimp',c:'#8ab4c4',o:'#3a6070',t:'Built to fly, born to explode.',p:'BLOW IT',d:'When I start my turn before the second corner of the track, I get +3 to my main move. On or after that corner, I get -1.',x:'<path d="M6 72l8 14H6zM54 72l-8 14h8z" fill="#556"/>'},
+heckler:{n:'Heckler',c:'#ffb347',o:'#a45a00',t:'It’s constructive criticism.',p:'SCHADENFREUDE',d:'When a racer ends their turn within 1 space of where they started, I move 2.',x:'<path d="M44 62l14-8v24l-14-8z" fill="#e33"/>'},
+mouth:{n:'M.O.U.T.H.',c:'#ff5a5a',o:'#7a0a0a',t:'Mastication Orifice Utilized Toward Hunger.',p:'CHOMP',d:'When I stop on a space with exactly one other racer, they’re eliminated from the race.',x:'<path d="M10 52Q31 80 50 52z" fill="#a01010" stroke="#222" stroke-width="3"/><path d="M16 53v6M24 55v7M32 56v7M40 55v6M46 53v5" stroke="#fff" stroke-width="3"/>'}};
 const pawn=(id,w=46)=>{const r=R[id];return `<svg viewBox="0 -16 60 106" width="${w}"><path d="M6 88V32Q6 4 30 4T54 32V88Z" fill="${r.c}" stroke="${r.o}" stroke-width="5" stroke-linejoin="round"/><circle cx="22" cy="34" r="8" fill="#fff"/><circle cx="40" cy="34" r="8" fill="#fff"/><circle cx="24" cy="36" r="3.5" fill="#222"/><circle cx="38" cy="36" r="3.5" fill="#222"/><path d="M20 54Q31 66 42 54" stroke="#222" stroke-width="3" fill="none"/>${r.x}</svg>`};
 const card=id=>`<div class="card" data-id="${id}" style="--cc:${R[id].o}"><div class="ch">${R[id].n}</div><div class="art" style="background:${R[id].c}55">${pawn(id,70)}</div><i>${R[id].t}</i><b>${R[id].p}</b><p>${R[id].d}</p></div>`;
-const PC=['#f5a7d6','#fecc3a','#f58a1f'],NC=['#c4a','#2a7','#38f','#e22','#82c','#e6a'];
+const PC=['#f5a7d6','#fecc3a','#f58a1f','#a6d4ea','#c9a0dc','#f3ecdc'],NC=['#f27fe0','#fbb31c','#f58a1f','#2f9bf2','#b57be8','#4cd07d'];
 const modal=(h,b)=>new Promise(res=>{const m=$('#md');m.className='on';m.innerHTML=`<div class="box">${h}<div class="bt">${b.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div></div>`;m.onclick=e=>{const i=e.target.dataset.i;if(i!=null){m.className='';m.innerHTML='';res(+i)}}});
 const pickCard=p=>new Promise(res=>{const m=$('#md');m.className='on';m.innerHTML=`<div class="box"><h2>${p.n}: choose your racer</h2><div class="hand">${p.hand.map(card).join('')}</div></div>`;m.onclick=e=>{const c=e.target.closest('.card');if(c){m.className='';m.innerHTML='';res(c.dataset.id)}}});
 let G;const log=t=>{const l=$('#log');l.insertAdjacentHTML('afterbegin',`<li>${t}</li>`);while(l.children.length>7)l.lastChild.remove()};
-const alive=()=>G.rs.filter(r=>!r.fin),own=r=>G.pl[r.o],nm=r=>`${R[r.id].n} (${own(r).n})`,has=(id,ex)=>alive().filter(o=>o.id==id&&o!==ex);
+const alive=()=>G.rs.filter(r=>!r.fin&&!r.out),own=r=>G.pl[r.o],nm=r=>`${R[r.id].n} (${own(r).n})`,has=(id,ex)=>alive().filter(o=>o.id==id&&o!==ex);
+const dec=(r,h,b,ai)=>own(r).ai?Promise.resolve(ai()):modal(h,b);
+const cardO=r=>`<div><b style="color:${own(r).col}">${own(r).n}</b>${card(r.id)}</div>`;
+function powers(){if(!G||!G.rs.length||$('#md').className=='on')return;modal(`<h2>Racer powers</h2><div class="hand">${G.rs.map(cardO).join('')}</div>`,['Close'])}
+function fit(){const w=$('#wrap'),b=$('#board'),s=Math.min(1,(innerWidth-24)/1100);b.style.transform=`scale(${s})`;b.style.margin=s<1?'0':'0 auto';w.style.height=b.offsetHeight*s+'px'}
+addEventListener('resize',fit);
 function render(){
- const wild=G.board=='wild';let h=`<div class="start">START</div><div class="mid" style="--gr:${wild?'#6b3fb0':'#4a9b3c'}">${wild?'WILD WILDS':'MILD MILE'}</div>`;
+ const wild=G.board=='wild',al=alive();
+ let h=`<div class="start"><span>START</span>${al.filter(r=>r.pos==0).map(r=>pawn(r.id,28)).join('')}</div><div class="fin">🏁<br>FINISH${G.placed.map((r,i)=>`<div>${['🥇','🥈'][i]}${pawn(r.id,26)}</div>`).join('')}</div><div class="mid" style="--gr:${wild?'#6b3fb0':'#4a9b3c'}">${wild?'WILD WILDS':'MILD MILE'}</div>`;
  for(let i=1;i<FIN;i++){let row,col;if(i<=12){row=1;col=i+3}else if(i<=14){row=i-11;col=15}else{row=4;col=30-i}
-  const s=wild&&WILD[i],k=wild?WCOL[i]:'rpygb'[i%5],lab=wild?(s?(s.s?'★1':s.t?'TRIP!':(s.a>0?'→':'←')+Math.abs(s.a)):''):(i%5==0?i:'');
-  h+=`<div class="sq" style="grid-area:${row}/${col};background:${COL[k]}">${lab?`<span class="ic">${lab}</span>`:''}${alive().concat(G.placed).filter(r=>r.pos==i).map(r=>`<span style="opacity:${r.trip?.45:1};transform:${r.trip?'rotate(90deg)':''}">${pawn(r.id,34)}</span>`).join('')}</div>`}
- const st=G.rs.concat().filter(r=>r.pos==0&&!r.fin);$('#board').innerHTML=h.replace('START</div>','START</div>'.replace('<','<'))+'';
- if(st.length)$('#board .start').insertAdjacentHTML('beforeend',st.map(r=>pawn(r.id,34)).join(''));
- $('#sc').innerHTML=G.pl.map(p=>`<div class="pl" style="--c:${p.col}">${p.n}<br><b>${p.pts}</b> pts</div>`).join('');
- $('#strip').innerHTML=G.rs.map(r=>`<div class="rc" style="--c:${own(r).col}">${pawn(r.id,22)}${R[r.id].n}${r.trip?' 🌀tripped':''}${r.fin?' #'+r.fin:''}</div>`).join('')}
+  const s=wild&&WILD[i],k=wild?WCOL[i]:'rpygb'[i%5],lab=wild?(s?(s.s?'★1':s.t?'TRIP!':(s.a>0?'→':'←')+Math.abs(s.a)):''):(i%5==0?i:''),on=al.filter(r=>r.pos==i),w=on.length>3?20:on.length>1?28:36;
+  h+=`<div class="sq" style="grid-area:${row}/${col};background:${COL[k]}">${lab?`<span class="ic">${lab}</span>`:''}${on.map(r=>`<span style="opacity:${r.trip?.45:1};transform:${r.trip?'rotate(90deg)':''}">${pawn(r.id,w)}</span>`).join('')}</div>`}
+ $('#board').innerHTML=h;fit();
+ $('#sc').innerHTML=G.pl.map(p=>`<div class="pl" style="--c:${p.col}">${p.n}${p.ai?' 🤖':''}<br><b>${p.pts}</b> pts</div>`).join('');
+ $('#chips').innerHTML='<span class="hd">Prize chips:</span>'+[0,1,2,3].map(i=>`<div class="cp${i==G.n?' cur':''}">Race ${i+1} · ${i%2?'Wild':'Mild'}<br>🥇 ${GOLD[i]} &nbsp; 🥈 ${SIL[i]}</div>`).join('');
+ $('#strip').innerHTML=G.rs.map(r=>`<div class="rc" style="--c:${own(r).col}" onclick="powers()">${pawn(r.id,22)}${R[r.id].n}${r.trip?' 🌀':''}${r.fin?' #'+r.fin:''}${r.out?' ❌':''}</div>`).join('')}
 const F={1:[0,0],2:[0,-90],5:[0,90],6:[0,180],3:[-90,0],4:[90,0]};let cum=0;
 async function rollDie(p){const v=rnd(6)+1,d=$('#die');d.style.setProperty('--dc',p.dc);cum+=720;const[x,y]=F[v];d.style.transform=`rotateX(${x+cum}deg) rotateY(${y+cum}deg)`;await sleep(1100);return v}
-function finish(r){r.fin=G.placed.length+1;G.placed.push(r);log(`🏁 ${nm(r)} finishes in place ${r.fin}!`);if(G.placed.length>=2)G.over=1;else if(alive().length<=1){const l=alive()[0];if(l){l.fin=2;G.placed.push(l);G.over=1}}}
-async function mv(r,d){if(!d||r.fin||G.over)return;const a=r.pos,b=Math.max(0,a+d);r.pos=Math.min(b,FIN);
- const ps=alive().filter(o=>o!==r&&(d>0?o.pos>a&&o.pos<b:o.pos<a&&o.pos>b));render();await sleep(450);
+function checkEnd(){if(G.placed.length>=2)G.over=1;else if(alive().length<=1){const l=alive()[0];if(l){l.fin=G.placed.length+1;G.placed.push(l)}G.over=1}}
+function finish(r){r.fin=G.placed.length+1;G.placed.push(r);log(`🏁 ${nm(r)} finishes in place ${r.fin}!`);checkEnd()}
+async function mv(r,d){if(!d||r.fin||r.out||G.over)return;const a=r.pos,b=Math.max(0,a+d);
+ if(b>FIN&&has('stickler',r).length){log(`📏 Stickler: ${nm(r)} needs the exact roll to finish`);return}
+ r.pos=Math.min(b,FIN);const ps=alive().filter(o=>o!==r&&(d>0?o.pos>a&&o.pos<b:o.pos<a&&o.pos>b));render();await sleep(450);
  if(b>=FIN){finish(r);render();return}
  for(const o of ps){if(o.id=='banana'){r.trip=1;log(`🍌 ${nm(r)} slips on Banana and trips!`)}if(o.id=='centaur'){log(`🐴 Centaur hoofwhacks ${nm(r)}!`);r.pos=Math.max(0,r.pos-2)}}render()}
-async function land(r,n=0){if(r.fin||G.over)return;const s=G.board=='wild'&&WILD[r.pos];if(!s)return;
+async function land(r,n=0){if(r.fin||r.out||G.over||n>8)return;const s=G.board=='wild'&&WILD[r.pos],sh=alive().filter(o=>o!==r&&o.pos==r.pos);
+ if(r.id=='baba'&&sh.length){sh.forEach(o=>o.trip=1);log('🧙 Baba Yaga trips everyone on her space')}else if(sh.some(o=>o.id=='baba')){r.trip=1;log(`🧙 ${nm(r)} is tripped by Baba Yaga`)}
+ if(r.id=='mouth'&&sh.length==1){sh[0].out=1;log(`😁 M.O.U.T.H. eliminates ${nm(sh[0])}!`);checkEnd();render();if(G.over)return}
+ if(alive().filter(o=>o.pos==r.pos).length==2)for(const m of has('romantic')){log('💕 Romantic is moved by love: +2');await mv(m,2);await land(m,n+1)}
+ if(!s||r.fin||r.out||G.over)return;
  if(s.s){own(r).pts++;log(`★ ${nm(r)} takes a bronze point chip`)}if(s.t){r.trip=1;log(`🌀 ${nm(r)} trips!`)}
- if(s.a&&n<6){log(`${nm(r)} follows the arrow (${s.a>0?'+':''}${s.a})`);await mv(r,s.a);await land(r,n+1)}}
-async function turn(r){const p=own(r);render();$('#info').innerHTML=`<span class="hd" style="font-size:26px;color:${p.col}">${p.n}</span><br>${pawn(r.id,40)} ${R[r.id].n}`;
- const rs=alive(),mn=Math.min(...rs.map(o=>o.pos)),mx=Math.max(...rs.map(o=>o.pos));
- const bt=$('#roll');bt.style.display='';bt.textContent=r.trip?'Recover (skip move)':'ROLL!';await new Promise(ok=>bt.onclick=ok);bt.style.display='none';
- const lastAlone=r.pos==mn&&rs.filter(o=>o.pos==mn).length==1;
- if(r.id=='loser'&&lastAlone){p.pts++;log(`💜 ${nm(r)} collects a point chip`)}
- if(r.id=='cheer'){const ls=rs.filter(o=>o.pos==mn);log('📣 Cheerleader cheers for last place!');for(const o of ls)await mv(o,2);await mv(r,1)}
- if(r.id=='hare'&&r.pos==mx&&rs.filter(o=>o.pos==mx).length==1&&!r.trip){log('🐇 Hare is alone in the lead: hubris! Skips main move');return}
+ if(s.a){log(`${nm(r)} follows the arrow (${s.a>0?'+':''}${s.a})`);await mv(r,s.a);await land(r,n+1)}}
+async function tin(r){const p=own(r),sp=r.pos;render();
+ $('#info').innerHTML=`<span class="hd" style="font-size:26px;color:${p.col}">${p.n}${p.ai?' 🤖':''}</span><br>${pawn(r.id,40)} <b>${R[r.id].n}</b>: ${R[r.id].p}<br><small>${R[r.id].d}</small>`;
+ const rs=alive(),mn=Math.min(...rs.map(o=>o.pos)),mx=Math.max(...rs.map(o=>o.pos)),bt=$('#roll');
+ if(p.ai)await sleep(900);else{bt.style.display='';bt.textContent=r.trip?'Recover (skip move)':'ROLL!';await new Promise(ok=>bt.onclick=ok);bt.style.display='none'}
+ if(r.id=='loser'&&r.pos==mn&&rs.filter(o=>o.pos==mn).length==1){p.pts++;log(`💜 ${nm(r)} collects a point chip`)}
+ if(r.id=='cheer'){log('📣 Cheerleader cheers for last place!');for(const o of rs.filter(o=>o.pos==mn)){await mv(o,2);await land(o)}await mv(r,1);await land(r)}
+ if(r.id=='hare'&&r.pos==mx&&rs.filter(o=>o.pos==mx).length==1){log('🐇 Hare is alone in the lead: hubris! Skips main move');return}
+ if(r.id=='party'){log('🎉 Party Animal pulls everyone closer!');const o=rs.filter(x=>x!==r&&x.pos!=r.pos);for(const x of o)await mv(x,x.pos<r.pos?1:-1);for(const x of o)await land(x)}
+ if(r.id=='third'){const al=alive(),sp2=[...new Set(al.map(o=>o.pos))].filter(x=>x!=r.pos&&al.filter(o=>o.pos==x).length==2);
+  if(sp2.length){const t=Math.max(...sp2);if(await dec(r,`<h2>Third Wheel</h2>Warp to space ${t}?`,['Warp','No'],()=>t>r.pos?0:1)==0){r.pos=t;log(`Third Wheel warps to space ${t}`);render();await sleep(400);await land(r)}}}
+ if(r.id=='hypno'){const o=alive().filter(x=>x!==r&&x.pos!=r.pos);if(o.length){const ld=o.reduce((a,b)=>b.pos>a.pos?b:a);
+  const i=await dec(r,'<h2>Hypnotist</h2>Warp which racer to your space?',[...o.map(nm),'Nobody'],()=>ld.pos>r.pos?o.indexOf(ld):o.length);
+  if(i<o.length){o[i].pos=r.pos;log(`🌀 Hypnotist warps ${nm(o[i])} to their space`);render();await sleep(400);await land(o[i])}}}
+ if(G.over||r.fin||r.out)return;
  if(r.trip){r.trip=0;log(`${nm(r)} recovers from the trip and skips their main move`);render();return}
- let roll,amt;
- if(r.id=='legs'&&await modal(`<h2>Legs: JOG?</h2>Skip rolling and move 5?`,['Jog (move 5)','Roll normally'])==0){amt=5;log('🏃 Legs jogs 5')}
- else{roll=await rollDie(p);log(`${nm(r)} rolled a ${roll}`);amt=roll;
+ if(r.id=='flip'){const o=alive().filter(x=>x!==r&&x.pos!=r.pos);if(o.length){const ld=o.reduce((a,b)=>b.pos>a.pos?b:a);
+  const i=await dec(r,'<h2>Flip Flop</h2>Skip rolling and swap spaces with:',[...o.map(nm),'Roll normally'],()=>ld.pos>r.pos?o.indexOf(ld):o.length);
+  if(i<o.length){[r.pos,o[i].pos]=[o[i].pos,r.pos];log(`🩴 Flip Flop swaps with ${nm(o[i])}`);render();await sleep(500);await land(r);await land(o[i]);return}}}
+ let roll=0,amt,pred=0,ex=0;
+ if(r.id=='legs'&&await dec(r,'<h2>Legs: JOG?</h2>Skip rolling and move 5?',['Jog (move 5)','Roll normally'],()=>0)==0){amt=5;log('🏃 Legs jogs 5')}
+ else{if(r.id=='genius')pred=1+await dec(r,'<h2>Genius</h2>Predict your roll!',[1,2,3,4,5,6],()=>rnd(6));
+  roll=await rollDie(p);log(`${nm(r)} rolled a ${roll}`);
+  if(r.id=='magic')for(let k=0;k<2;k++){if(await dec(r,`<h2>Magician rolled ${roll}</h2>Reroll? (${2-k} left)`,['Reroll','Keep'],()=>roll<=2?0:1)!=0)break;roll=await rollDie(p);log(`✨ Magician rerolls: ${roll}`)}
+  if(pred&&roll==pred){ex=1;log('🧠 Genius predicted right: extra turn!')}
+  amt=roll;
   if(r.id=='alch'&&roll<3){amt=4;log('⚗️ Alchemist transmutes the roll into 4')}
-  if(r.id=='rocket'&&await modal(`<h2>Rocket Scientist rolled ${roll}</h2>Kablooey: double it to ${roll*2} (and trip)?`,['Kablooey!','No thanks'])==0){amt=roll*2;r.trip=1}
-  for(const l of has('lackey',r))if(roll==6){log('Lackey hustles 2 first');await mv(l,2)}
-  const iw=has('inch',r)[0];if(roll==1&&iw){log('🐛 Inchworm wriggles; roll of 1 is skipped');await mv(iw,1);return}}
- if(r.id=='hare')amt+=2;amt+=alive().filter(o=>o.id=='coach'&&o.pos==r.pos).length;amt-=has('gunk',r).length;amt=Math.max(0,amt);
- log(`${nm(r)} moves ${amt}`);await mv(r,amt);await land(r)}
-async function race(){G.over=0;G.placed=[];G.board=G.n%2?'wild':'mild';$('#log').innerHTML='';
- const picks=[];for(let i=0;i<G.pl.length;i++){const p=G.pl[i];await modal(`<h2>${p.n}</h2>Pass the device: only ${p.n} should look!`,[`I’m ${p.n}`]);const id=await pickCard(p);p.hand=p.hand.filter(h=>h!=id);picks.push({id,o:i,pos:0,trip:0,fin:0})}
- G.rs=picks;let f=G.first;G.order=G.rs.map((_,i)=>G.rs[(i+f)%G.rs.length]);G.rs=G.order.concat();
- await modal(`<h2>Race ${G.n+1} of 4: ${G.board=='wild'?'Wild Wilds':'Mild Mile'}</h2><div class="hand">${G.rs.map(r=>card(r.id)).join('')}</div>`,['Start race!']);
- while(!G.over)for(const r of G.order){if(r.fin)continue;await turn(r);if(G.over)break}
- render();const[a,b]=G.placed;G.pl[a.o].pts+=GOLD[G.n];G.pl[b.o].pts+=SIL[G.n];
- const lastR=G.rs.filter(r=>!r.fin).sort((x,y)=>x.pos-y.pos)[0]||b;G.first=lastR.o;G.n++;render();
- await modal(`<h2>Race ${G.n} complete!</h2>🥇 ${nm(a)} +${GOLD[G.n-1]}<br>🥈 ${nm(b)} +${SIL[G.n-1]}`,['Continue'])}
-async function main(){const np=2+await modal(`<h2>MAGICAL ATHLETE</h2>Hot-seat game: how many players?`,['2 players','3 players']);
- const ids=shuf(Object.keys(R));G={n:0,first:rnd(np),pl:[...Array(np)].map((_,i)=>({n:'Player '+(i+1),col:NC[i],dc:PC[i],pts:0,hand:ids.slice(i*4,i*4+4)})),rs:[],placed:[]};
+  if(r.id=='rocket'&&await dec(r,`<h2>Rocket Scientist rolled ${roll}</h2>Kablooey: double it to ${roll*2} (and trip)?`,['Kablooey!','No thanks'],()=>roll>=4?0:1)==0){amt=roll*2;r.trip=1}
+  for(const l of has('lackey',r))if(roll==6){log('Lackey hustles 2 first');await mv(l,2);await land(l)}
+  const iw=has('inch',r)[0];if(roll==1&&iw){log('🐛 Inchworm wriggles; the roll of 1 is skipped');await mv(iw,1);await land(iw);return}}
+ if(r.id=='hare')amt+=2;if(r.id=='blimp')amt+=sp<15?3:-1;if(r.id=='party')amt+=alive().filter(o=>o!==r&&o.pos==r.pos).length;
+ amt+=alive().filter(o=>o.id=='coach'&&o.pos==r.pos).length;amt-=has('gunk',r).length;amt=Math.max(0,amt);
+ log(`${nm(r)} moves ${amt}`);await mv(r,amt);await land(r);return ex}
+async function turn(r){const s=r.pos,x=await tin(r);
+ if(!r.fin&&!r.out&&!G.over&&Math.abs(r.pos-s)<=1)for(const h of has('heckler',r)){log(`📢 Heckler mocks ${nm(r)}: +2!`);await mv(h,2);await land(h)}return x}
+async function race(){G.over=0;G.tc=0;G.placed=[];G.rs=[];G.board=G.n%2?'wild':'mild';$('#log').innerHTML='';render();
+ const picks=[];for(let i=0;i<G.pl.length;i++){const p=G.pl[i];let id;
+  if(p.ai)id=p.hand[rnd(p.hand.length)];else{await modal(`<h2>${p.n}</h2>Pass the device: only ${p.n} should look!`,[`I’m ${p.n}`]);id=await pickCard(p)}
+  p.hand=p.hand.filter(h=>h!=id);picks.push({id,o:i,pos:0,trip:0,fin:0,out:0})}
+ G.rs=picks;G.order=picks.map((_,i)=>picks[(i+G.first)%picks.length]);render();
+ await modal(`<h2>Race ${G.n+1} of 4: ${G.board=='wild'?'Wild Wilds':'Mild Mile'}</h2><div class="hand">${G.order.map(cardO).join('')}</div>`,['Start race!']);
+ while(!G.over)for(const r of G.order){if(++G.tc>600){log('♾️ Endless loop: the race ends with no further points');G.over=1;break}let go=1;while(go&&!r.fin&&!r.out&&!G.over)go=await turn(r);if(G.over)break}
+ render();const[a,b]=G.placed;if(a)G.pl[a.o].pts+=GOLD[G.n];if(b)G.pl[b.o].pts+=SIL[G.n];
+ const lr=G.rs.filter(r=>!r.fin).sort((x,y)=>x.pos-y.pos)[0]||b||a;G.first=lr.o;G.n++;render();
+ await modal(`<h2>Race ${G.n} complete!</h2>${a?`🥇 ${nm(a)} +${GOLD[G.n-1]}`:''}<br>${b?`🥈 ${nm(b)} +${SIL[G.n-1]}`:''}`,['Continue'])}
+async function main(){const np=2+await modal(`<h2>MAGICAL ATHLETE</h2>How many players? (2–6)`,['2','3','4','5','6']);
+ const hm=await modal(`<h2>${np} players</h2>How many are human? The rest are 🤖 CPU opponents.`,[...Array(np+1)].map((_,i)=>i));
+ const ids=shuf(Object.keys(R));G={n:0,first:rnd(np),pl:[...Array(np)].map((_,i)=>({n:i<hm?'Player '+(i+1):'CPU '+(i-hm+1),ai:i>=hm,col:NC[i],dc:PC[i],pts:0,hand:ids.slice(i*4,i*4+4)})),rs:[],placed:[]};
  while(G.n<4)await race();const m=Math.max(...G.pl.map(p=>p.pts)),w=G.pl.filter(p=>p.pts==m);
  await modal(`<h2>${w.length>1?'It’s a tie!':w[0].n+' wins!'}</h2>${G.pl.map(p=>`${p.n}: ${p.pts} pts`).join('<br>')}`,['Play again']);main()}
 $('#die').innerHTML=[1,2,3,4,5,6].map((n,i)=>`<i style="color:${['#e33','#27d','#2a4','#82c','#2a6','#d28'][i]};transform:${['','rotateY(90deg)','rotateX(90deg)','rotateX(-90deg)','rotateY(-90deg)','rotateY(180deg)'][i]} translateZ(40px)">${n}</i>`).join('');

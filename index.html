@@ -117,6 +117,8 @@ body:not(.ing) #game{visibility:hidden}
 .frm{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:16px 0}
 .frm label{display:flex;flex-direction:column;font-size:13px;font-weight:600;color:#bbb;gap:5px;text-align:left}
 select{font:600 17px Rubik,sans-serif;padding:10px 12px;border-radius:12px;border:2px solid #fff;background:#222;color:#fff;min-width:140px}
+.names{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:0 0 16px}.names label{display:flex;flex-direction:column;font-size:13px;font-weight:600;color:#bbb;gap:5px;text-align:left}
+.names input{font:600 17px Rubik,sans-serif;padding:10px 12px;border-radius:12px;border:2px solid #fff;background:#222;color:#fff;width:170px}.names input:focus{outline:3px solid var(--y);outline-offset:1px}
 #sinfo{min-height:40px;font-size:14px;color:#ccc;max-width:720px;margin:0 auto}
 .cols{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
 .col{background:#1d1d1d;border:3px solid var(--c);border-radius:14px;padding:8px;width:148px;cursor:pointer;opacity:.75}
@@ -247,7 +249,10 @@ const noemo=t=>String(t).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-
 const STAR={alch:1,banana:1,centaur:1,coach:1,gunk:1,hare:2,legs:1,lackey:2,loser:1,cheer:2,inch:2,rocket:2,baba:2,romantic:3,third:3,hypno:3,flip:3,magic:2,genius:3,party:4,stickler:3,blimp:2,heckler:3,mouth:2,copy:4,dice:4,duel:4,egg:5,baby:4,leap:3,mind:4,scooch:5,sisy:3,skip:5,suck:5,twin:5};
 const stars=id=>'★'.repeat(STAR[id]||3)+'☆'.repeat(5-(STAR[id]||3));
 const card=(id,pk)=>{const r=R[id];return `<div class="cw"><div class="fc" data-id="${id}"><div class="fci"><div class="face front"><img src="assets/cards/${id}.webp" alt="${r.n} card" draggable="false"></div><div class="face back" style="--cc:${r.c}"><div class="bk"><div class="ch">${r.n}</div><span class="pill">${r.p}</span><p>${r.d}</p><div class="stars"><small>Complexity</small>${stars(id)}</div><i>${r.t}</i></div></div></div></div>${pk?`<button data-pick="${id}" aria-label="Pick ${r.n}">Pick</button>`:''}</div>`};
-const pname=(ai,i)=>{const hu=ai.slice(0,i+1).filter(x=>!x).length;return ai[i]?'CPU '+(i+1-hu):'Player '+hu};
+// Human player names typed on the setup screen; remembered on this device for next time
+let PN=(()=>{try{return JSON.parse(localStorage.getItem('ma_names'))||[]}catch(e){return[]}})();
+const cleanName=v=>v.replace(/[<>&"'`]/g,'').replace(/\s+/g,' ').trim().slice(0,14);
+const pname=(ai,i)=>{const hu=ai.slice(0,i+1).filter(x=>!x).length;return ai[i]?'CPU '+(i+1-hu):(PN[hu-1]||'Player '+hu)};
 document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('.fc');if(c&&!e.target.closest('button'))c.classList.toggle('flip')});
 const PC=['#f5a7d6','#fecc3a','#f58a1f','#a6d4ea','#c9a0dc','#f3ecdc'],NC=['#f27fe0','#fbb31c','#f58a1f','#2f9bf2','#b57be8','#4cd07d'];
 const modal=(h,b)=>new Promise(res=>{const m=$('#md');m.className='on';m.innerHTML=`<div class="box">${noemo(h)}<div class="bt">${b.map((t,i)=>`<button data-i="${i}"${b.length>2?' class="sec"':''}>${noemo(t)}</button>`).join('')}</div></div>`;m.onclick=e=>{const i=e.target.dataset.i;if(i!=null){m.className='';m.innerHTML='';res(+i)}}});
@@ -265,10 +270,11 @@ const GEO={mild:{img:'assets/board-mild.webp',W:1044,H:326,x0:27.9,p:66.15,w:63,
 let ROT=false;
 // space i -> [x,y,w,h]: 0 = Start box, 1-12 top row, 13-14 right side, 15-29 bottom row (right to left)
 function cellBox(g,i){if(i==0)return[g.x0,g.y0,2*g.p+g.w,g.h];let row,col;if(i<=12){row=0;col=i+2}else if(i<=14){row=i-12;col=14}else{row=3;col=29-i}return[g.x0+col*g.p,g.y0+row*g.q,g.w,g.h]}
-function fit(){const g=GEO[G.board],b=$('#board'),w=$('#wrap');let s;
- if(ROT){const avW=Math.max(150,innerWidth-20-10-168),avH=innerHeight-$('#top').offsetHeight-28;s=Math.min(avW/g.H,avH/g.W);
+// Both boards are sized from the Mild Mile, so the Wild Wilds shows at the same on-screen length
+function fit(){const g=GEO[G.board],m=GEO.mild,k=m.W/g.W,b=$('#board'),w=$('#wrap');let s;
+ if(ROT){const avW=Math.max(150,innerWidth-20-10-168),avH=innerHeight-$('#top').offsetHeight-28;s=Math.min(avW/m.H,avH/m.W)*k;
   w.style.width=g.H*s+'px';w.style.height=g.W*s+'px';b.style.transform=`translateX(${g.H*s}px) rotate(90deg) scale(${s})`}
- else{const avW=Math.min(innerWidth-32,1180),avH=innerHeight<520?innerHeight-$('#top').offsetHeight-150:innerHeight*.62;s=Math.min(avW/g.W,avH/g.H,1.2);
+ else{const avW=Math.min(innerWidth-32,1180),avH=innerHeight<520?innerHeight-$('#top').offsetHeight-150:innerHeight*.62;s=Math.min(avW/m.W,avH/m.H,1.2)*k;
   w.style.width=g.W*s+'px';w.style.height=g.H*s+'px';b.style.transform=`scale(${s})`}}
 addEventListener('resize',()=>{if(G&&G.board)render()});
 function trip(r){if(r.trip||r.fin||r.out)return;r.trip=1;r.fallAt=Date.now();sfx('trip')}
@@ -306,9 +312,11 @@ async function mv(r,d){if(lpg())return;if(!d||r.fin||r.out||G.over)return;const 
  for(const p of path){if(p>=FIN)break;G.big=Math.abs(p-r.pos)>1;r.pos=p;rd.forEach(s=>s.pos=p);G.hop=r;sfx('hop');render();await sleep(G.big?340:230)}G.hop=null;G.big=0;
  if(b>=FIN){r.pos=FIN;rd.forEach(s=>s.pos=FIN);finish(r);for(const s of rd)if(!G.over||!s.fin){if(!s.fin&&G.placed.length<2)finish(s)}render();return}
  r.rd=rd;const bb=has('baby',r).find(x=>x.pos>0&&x.pos==r.pos);if(bb){r.pos--;rd.forEach(s=>s.pos=r.pos);log('👶 Huge Baby: no room on her space')}
- let tr=0;for(const o of ps){const e=eid(o);if(e=='banana'){[r,...rd].forEach(trip);tr=1;log(`🍌 ${nm(r)} slips on Banana and trips!`);await fire(o)}
-  if(e=='centaur'){log(`🐴 Centaur hoofwhacks ${nm(r)}!`);await fire(o);await mv(r,-Math.min(2,r.pos))}}
- render();if(tr)await sleep(650);await sleep(120);for(let k=0;k<skips;k++)await fire(r)}
+ let tr=0;for(const o of ps){const e=eid(o);if(e=='banana'){[r,...rd].forEach(trip);tr=1;log(`🍌 ${nm(r)} slips on Banana and trips!`);await fire(o)}}
+ render();if(tr)await sleep(650);
+ // Centaur: racers I pass move back 2, but never farther back than the Start
+ if(d>0&&eid(r)=='centaur')for(const o of ps){if(o.fin||o.out||G.over||!o.pos)continue;log(`🐴 Centaur hoofwhacks ${nm(o)} back ${Math.min(2,o.pos)}!`);await fire(r);await mv(o,-Math.min(2,o.pos));await land(o)}
+ await sleep(120);for(let k=0;k<skips;k++)await fire(r)}
 async function land(r,n=0,tog=[]){if(lpg())return;if(r.fin||r.out||G.over||n>8)return;const rd=r.rd||[];r.rd=null;let e=eid(r),tp=0;
  const bb=has('baby',r).find(x=>x.pos>0&&x.pos==r.pos&&!tog.includes(x));if(bb){r.pos=bb.pos-1;log(`👶 Huge Baby: ${nm(r)} is put behind her`);render()}
  let sh=alive().filter(o=>o!==r&&o.pos==r.pos&&!tog.includes(o));
@@ -400,7 +408,7 @@ const setup=()=>new Promise(res=>{
   <div class="frm"><label>Players<select data-s="np">${[2,3,4,5,6].map(n=>`<option${n==np?' selected':''}>${n}</option>`).join('')}</select></label>
   <label>Humans<select data-s="hm">${[...Array(np+1)].map((_,i)=>`<option${i==hm?' selected':''}>${i}</option>`).join('')}</select></label>
   <label>Game type<select data-s="mode">${Object.entries(MODES).map(([k,v])=>`<option value="${k}"${k==mode?' selected':''}>${v[0]}</option>`).join('')}</select></label></div>
-  <div id="sinfo">${MODES[mode][1]}<br><small>The other seats are CPU players.</small></div>
+  ${hm?`<div class="names">${[...Array(hm)].map((_,i)=>`<label>Player ${i+1} name<input data-n="${i}" maxlength="14" placeholder="Player ${i+1}" value="${PN[i]||''}" autocomplete="off" enterkeyhint="done"></label>`).join('')}</div>`:''}<div id="sinfo">${MODES[mode][1]}<br><small>The other seats are CPU players.</small></div>
   <div class="bt"><button class="sec" data-a="title">Back</button><button data-a="${mode=='choose'?'next':'go'}">${mode=='choose'?'Next: pick racers':'Start game'}</button></div></div>`;
  const pickr=()=>`<div class="box" id="setup"><h2>Hand-Pick racers</h2>
   <div class="cols">${[...Array(np)].map((_,i)=>`<div class="col${i==act?' act':''}" style="--c:${NC[i]}" data-a="act" data-v="${i}"><div class="hd">${nmOf(i)}</div><button class="sb on" data-a="ai" data-v="${i}">${ai[i]?IC.cpu+' CPU':IC.hum+' Human'}</button>${[0,1,2,3].map(k=>{const id=H[i][k];return id?`<div class="slot" data-a="rm" data-v="${id}">${pawn(id,30)}<span>${R[id].n}</span></div>`:`<div class="slot e">empty</div>`}).join('')}</div>`).join('')}</div>
@@ -414,6 +422,7 @@ const setup=()=>new Promise(res=>{
   if(p=='add'){if(H[act].length<4)H[act].push(sel);else note=nmOf(act)+' already has 4 racers. Tap one of their slots to remove it first.'}
   if(p=='rm')H.forEach((h,i)=>{if(h.includes(sel))H[i]=h.filter(x=>x!=sel)});
   closePv();draw()};
+ m.oninput=e=>{const n=e.target.dataset&&e.target.dataset.n;if(n==null)return;PN[+n]=cleanName(e.target.value);try{localStorage.setItem('ma_names',JSON.stringify(PN))}catch(err){}};
  m.onchange=e=>{const t=e.target.dataset&&e.target.dataset.s;if(!t)return;const v=e.target.value;if(t=='np'){np=+v;if(hm>np)hm=np}else if(t=='hm')hm=+v;else mode=v;draw()};
  m.onclick=e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,v=t.dataset.v;
   if(a=='next'){ai=[...Array(6)].map((_,i)=>i>=hm?1:0);if(act>=np)act=np-1;for(let i=np;i<6;i++)H[i]=[];st='pick'}

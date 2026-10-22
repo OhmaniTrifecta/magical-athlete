@@ -1,59 +1,201 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Magical Athlete</title>
-<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Magical Athlete</title>
+<meta name="description" content="A digital version of Magical Athlete, the racing game of pure chaos.">
+<meta name="theme-color" content="#de3f2a">
+<meta property="og:title" content="Magical Athlete"><meta property="og:image" content="assets/boxart.webp">
+<link rel="icon" href="assets/icon-32.png"><link rel="apple-touch-icon" href="assets/icon-180.png"><link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,600;0,800;0,900;1,900&display=swap" rel="stylesheet">
 <style>
-:root{--r:#f04c24;--p:#f27fe0;--y:#fbb31c;--g:#4a9b3c;--b:#2f9bf2;--u:#b57be8;--ink:#17121f}
-*{box-sizing:border-box}body{margin:0;background:#1c1530;color:#fff;font:16px Fredoka,sans-serif}
-h1,h2,.hd{font-family:'Lilita One',sans-serif;letter-spacing:.03em}
-header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;flex-wrap:wrap;gap:8px}
-h1{margin:0;font-size:30px;color:var(--y);-webkit-text-stroke:1px var(--r)}
-#sc{display:flex;gap:10px}.pl{background:#2d2350;border-radius:12px;padding:6px 12px;border:3px solid var(--c)}.pl b{font-size:22px}
-#wrap{overflow:hidden;padding:0 12px}
-#board{width:1100px;transform-origin:0 0;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(4,70px);gap:4px;background:#000;border-radius:44px;padding:12px;border:4px solid #444}
-.sq{border-radius:7px;display:flex;flex-wrap:wrap;align-content:flex-end;justify-content:center;position:relative;font:22px 'Lilita One';color:#fff}
-.sq small{position:absolute;top:2px;left:5px;font-size:15px;text-shadow:0 1px #0008}.sq svg{margin:0 -5px}
-.sq .ic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;z-index:1;text-shadow:0 2px 0 #0006;pointer-events:none}
-.mid{grid-area:2/2/4/15;display:flex;align-items:center;justify-content:center;font:62px 'Lilita One';color:#fff;-webkit-text-stroke:3px #111;paint-order:stroke fill;border-radius:20px;background:linear-gradient(#000 60%,var(--gr) 61%)}
-.start{flex-wrap:wrap;grid-area:1/1/2/4;background:var(--b);color:var(--r);font:italic 34px 'Lilita One';display:flex;align-items:center;justify-content:center;border-radius:30px 7px 7px 7px;position:relative}
-#ctl{display:flex;gap:24px;align-items:center;justify-content:center;padding:14px;flex-wrap:wrap}
-.scene{width:90px;height:90px;perspective:400px}.die{width:80px;height:80px;position:relative;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.2,.8,.3,1);margin:5px}
-.die i{position:absolute;inset:0;background:var(--dc);border-radius:14px;border:2px solid #0003;display:flex;align-items:center;justify-content:center;font:normal 52px 'Lilita One';backface-visibility:hidden}
-button{font:20px 'Lilita One';background:var(--y);color:var(--ink);border:0;border-radius:14px;padding:10px 22px;cursor:pointer;box-shadow:0 4px #a56a00}button:active{transform:translateY(3px);box-shadow:0 1px #a56a00}
-#info{max-width:380px;font-size:18px}#strip{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:6px}.rc{background:#2d2350;border-radius:10px;padding:2px 10px;display:flex;align-items:center;gap:4px;border:2px solid var(--c)}
-#log{max-width:700px;margin:6px auto;padding:0 20px;color:#c9bfe8;font-size:14px;list-style:none;min-height:90px}
-#md{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:9;overflow:auto}#md.on{display:flex}
-.box{background:#2d2350;border-radius:20px;padding:22px;max-width:96vw;text-align:center}.bt{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.hand{display:flex;gap:12px;perspective:900px;flex-wrap:wrap;justify-content:center}
-.card{width:170px;background:#fff8e8;color:var(--ink);border-radius:14px;padding:8px;border:5px solid var(--cc);transition:transform .25s;cursor:pointer;text-align:center;transform-style:preserve-3d}
-.card:hover{transform:rotateY(10deg) rotateX(-8deg) translateY(-8px);box-shadow:-8px 14px 18px #0007}
-.card .ch{font:22px 'Lilita One'}.art{border-radius:10px;padding:4px}.card i{font-size:11px;display:block;margin:4px 0}.card b{font:14px 'Lilita One';color:var(--r)}.card p{margin:3px 0;font-size:13px;font-weight:600}
-.fin{grid-area:2/1/4/2;background:repeating-conic-gradient(#fff 0 25%,#111 0 50%) 0 0/20px 20px;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font:15px 'Lilita One';text-align:center;text-shadow:0 0 3px #000,0 0 3px #000,0 0 6px #000;overflow:hidden}.fin div{display:flex;align-items:center;font-size:14px}
-#chips{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;padding:0 12px 8px}.cp{background:#2d2350;border-radius:10px;padding:3px 10px;font-size:14px;text-align:center;opacity:.6}.cp.cur{opacity:1;border:2px solid var(--y);background:#4a3a10}
-#pw{background:#9fd6ff;box-shadow:0 4px #2a6a9a}.box{max-height:94vh;overflow:auto}.card .ch{font-size:19px}
-.pw{display:inline-block;transform-origin:50% 100%;position:relative;z-index:2}.hop{animation:hop var(--hd,.26s) ease-out;z-index:6}
-@keyframes hop{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-24px) scaleY(1.12)}72%{transform:translateY(0) scaleY(.82)}100%{transform:translateY(0) scale(1)}}
-.tr{transform:rotate(90deg) translateX(-4px);opacity:.55}.fall{animation:fall var(--fd,.65s) ease-in forwards}
-@keyframes fall{0%{transform:rotate(0)}25%{transform:rotate(-18deg) translateY(-8px)}60%{transform:rotate(105deg) translateY(4px)}80%{transform:rotate(82deg)}100%{transform:rotate(90deg) translateX(-4px);opacity:.55}}
-#spd{display:flex;gap:6px;align-items:center}#spd button{padding:6px 12px;font-size:17px;box-shadow:0 3px #a56a00;opacity:.55}#spd button.on{opacity:1;outline:3px solid #fff}#spd button#mu{opacity:1;background:#cde}
+:root{--red:#de3f2a;--r:#f04c24;--o:#f7941d;--y:#fbb31c;--g:#3f9a3c;--b:#3b9be0;--p:#ee8fd0;--u:#a98ad6;--ink:#111;--cream:#fff8e8;--ds:72px;--safe:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--red) radial-gradient(ellipse at 50% 30%,#e8533c 0%,#de3f2a 45%,#a92a1b 100%) fixed;color:#fff;font:16px/1.35 Rubik,system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3,.hd{font-family:Rubik;font-weight:900;margin:0 0 8px;letter-spacing:.01em}
+h2{font-size:26px}
+.ic{width:1.1em;height:1.1em;vertical-align:-.17em;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+/* panels look like the board: black with a thin white inner line */
+.panel,.box{background:#111;border:3px solid #fff;border-radius:22px;box-shadow:0 0 0 7px #111,0 18px 40px #0008}
+/* buttons */
+button{font:800 17px Rubik,sans-serif;background:var(--y);color:var(--ink);border:3px solid var(--ink);border-radius:14px;padding:10px 20px;cursor:pointer;box-shadow:0 4px 0 var(--ink);transition:transform .08s,box-shadow .08s;touch-action:manipulation}
+button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+button:focus-visible{outline:3px solid var(--b);outline-offset:2px}
+.box button,.panel button{border-color:#000;box-shadow:0 4px 0 #a86e00}.box button:active,.panel button:active{box-shadow:0 1px 0 #a86e00}
+button.sec{background:#fff}.box button.sec,.panel button.sec{box-shadow:0 4px 0 #999}
+button.ghost{background:transparent;color:#fff;border:2px solid #fff6;box-shadow:none;padding:8px 14px}
+button.ghost:active{transform:none;background:#fff2}
+.bt{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+/* ---------- title screen ---------- */
+#title{position:fixed;inset:0;z-index:40;background:var(--red);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:16px 16px calc(16px + var(--safe));overflow:auto}
+#title.off{display:none}
+#title .art{width:min(100%,880px,calc((100vh - 230px)*1.585));border-radius:10px;filter:drop-shadow(0 12px 24px #0006)}
+#title .tag{font-weight:900;font-style:italic;font-size:20px;text-shadow:0 2px 0 #0005;margin-top:-6px}
+#title .menu{display:flex;flex-direction:column;gap:12px;width:min(320px,100%)}
+#title .menu button{font-size:22px;padding:14px}
+#title small{opacity:.8;font-size:12px;text-align:center;max-width:520px}
+/* ---------- game screen ---------- */
+body:not(.ing) #game{visibility:hidden}
+#game{max-width:1240px;margin:0 auto;padding:10px 16px calc(12px + var(--safe));display:flex;flex-direction:column;gap:10px;min-height:100%}
+#top{display:flex;align-items:center;gap:12px}
+#top .logo{height:34px;filter:drop-shadow(0 2px 0 #0006)}
+#sc{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+.pl{display:flex;align-items:center;gap:7px;background:#111;border-radius:12px;padding:5px 10px 5px 6px;border:2px solid #fff;font-weight:600;font-size:14px;white-space:nowrap}
+.pl .dot{width:12px;height:22px;border-radius:6px;background:var(--c)}.pl b{font-size:18px;font-weight:900;margin-left:4px}.pl .ic{opacity:.7}
+#menuBtn{padding:8px 11px;background:#111;color:#fff;border-color:#fff;box-shadow:0 3px 0 #000}
+#chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.cp{display:flex;align-items:center;gap:8px;background:#0005;border-radius:999px;padding:4px 12px 4px 6px;font-size:13px;font-weight:600;opacity:.75}
+.cp.cur{opacity:1;background:#111;box-shadow:0 0 0 2px #fff}.cp.done{opacity:.45}
+.cp .n{font-weight:900;font-size:12px;background:#fff;color:#111;border-radius:999px;width:22px;height:22px;display:grid;place-items:center}
+.chip{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font:900 12px Rubik;color:#111;border:2px solid #0008;box-shadow:inset 0 0 0 3px #fff7;vertical-align:middle}
+.chip.au{background:#f6c431}.chip.ag{background:#cfd6dc}.chip.cu{background:#d9894a}
+#stage{display:flex;flex-direction:column;gap:12px;align-items:center}
+#wrap{position:relative;flex:none}
+#board{position:absolute;left:0;top:0;transform-origin:0 0;background-size:100% 100%;filter:drop-shadow(0 14px 22px #0007)}
+.cell{position:absolute;display:flex;align-items:center;justify-content:center}
+.ci{display:flex;flex-wrap:wrap;align-items:flex-end;align-content:center;justify-content:center;gap:0 1px;flex:none}
+.tk{display:block;filter:drop-shadow(0 3px 2px #0008);pointer-events:none;user-select:none}
+.pw{display:inline-block;transform-origin:50% 100%;position:relative;z-index:2;line-height:0}
+.pw.me{z-index:5}.pw.me .tk{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px #fff) drop-shadow(0 3px 2px #0008)}
+.hop{animation:hop var(--hd,.26s) ease-out;z-index:6}
+@keyframes hop{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-24px) scaleY(1.1)}72%{transform:translateY(0) scaleY(.85)}100%{transform:translateY(0) scale(1)}}
 .hop.big{animation:hopbig calc(var(--hd,.26s)*1.4) ease-out}
-@keyframes hopbig{0%{transform:translateY(0) scale(1)}45%{transform:translateY(-46px) scaleY(1.15)}78%{transform:translateY(0) scaleY(.8)}100%{transform:translateY(0) scale(1)}}
-#setup{width:min(980px,96vw)}.srow{margin:6px}.sb{padding:6px 14px;font-size:18px;opacity:.6;margin:0 3px}.sb.on{opacity:1;outline:3px solid #fff}
-.cols{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0}.col{background:#241b42;border:3px solid var(--c);border-radius:12px;padding:6px;width:142px;cursor:pointer;opacity:.7}.col.act{opacity:1;box-shadow:0 0 0 3px #fff}.col .hd{color:var(--c);font-size:18px}
-.slot{display:flex;align-items:center;gap:4px;font-size:13px;height:34px;background:#3a2f66;border-radius:8px;margin-top:4px;padding:0 4px;overflow:hidden;white-space:nowrap}.slot.e{opacity:.35;justify-content:center}
-.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:6px;margin:8px 0;text-align:center}.tile{background:#3a2f66;border-radius:10px;padding:4px;cursor:pointer;font-size:12px;display:flex;flex-direction:column;align-items:center;border:3px solid transparent}.tile.tk{opacity:.45;border-color:var(--c)}
-#sinfo{min-height:40px;font-size:14px;color:#ddd;max-width:720px;margin:0 auto}
-.fc{width:176px;height:310px;perspective:900px;cursor:pointer;text-align:left}.fci{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}.fc.flip .fci{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff8e8;color:var(--ink);border:5px solid var(--cc);border-radius:14px;padding:8px;text-align:center;display:flex;flex-direction:column;gap:4px;overflow:hidden;box-shadow:0 8px 16px #0006}.face.back{transform:rotateY(180deg);background:#fff3cf}
-.face .ch{font:20px 'Lilita One'}.face .art{border-radius:10px;padding:4px;display:flex;justify-content:center;align-items:flex-end}.face i{font-size:11px;color:#555;line-height:1.2}.face b{font:15px 'Lilita One';color:var(--r)}.face p{margin:0;font-size:13px;font-weight:600;line-height:1.25;overflow:auto}
-.stars{color:#f5a300;letter-spacing:2px;font-size:17px}.stars small{font-size:10px;color:#777;letter-spacing:0}.face button{margin-top:auto;font-size:16px;padding:6px 12px}
-#pv{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:20}
-.frm{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:14px 0}.frm label{display:flex;flex-direction:column;font-size:14px;color:#cbc;gap:4px;text-align:left}
-select{font:18px Fredoka,sans-serif;padding:8px 10px;border-radius:10px;border:3px solid var(--y);background:#1c1530;color:#fff;min-width:130px}.sub{color:#cbc;margin-top:-6px}
-.tile .stars{font-size:11px;letter-spacing:0}
+@keyframes hopbig{0%{transform:translateY(0) scale(1)}45%{transform:translateY(-46px) scaleY(1.12)}78%{transform:translateY(0) scaleY(.82)}100%{transform:translateY(0) scale(1)}}
+.tr{transform:rotate(90deg) translateX(-4px);opacity:.6}.fall{animation:fall var(--fd,.65s) ease-in forwards}
+@keyframes fall{0%{transform:rotate(0)}25%{transform:rotate(-18deg) translateY(-8px)}60%{transform:rotate(105deg) translateY(4px)}80%{transform:rotate(82deg)}100%{transform:rotate(90deg) translateX(-4px);opacity:.6}}
+/* HUD */
+#hud{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;width:100%;max-width:1100px;align-items:start}
+#turn{padding:14px 16px;display:flex;gap:14px;align-items:center;min-height:132px}
+#info{flex:1;min-width:0}
+.who{display:flex;align-items:center;gap:8px;font-weight:900;font-size:20px;color:var(--c)}
+.who .ic{color:#fff;opacity:.7}
+.rcr{display:flex;gap:12px;align-items:center;margin-top:6px}
+.rcr .tk{height:64px;flex:none}
+.rcr .nm{font-weight:900;font-size:17px}
+.pill{display:inline-block;font:800 11px Rubik;letter-spacing:.06em;background:var(--y);color:#111;border-radius:999px;padding:2px 9px;margin:2px 0 4px}
+.rcr p{margin:0;font-size:14px;color:#ddd}
+.dierow{display:flex;flex-direction:column;align-items:center;gap:10px;flex:none}
+.scene{width:calc(var(--ds) + 10px);height:calc(var(--ds) + 10px);perspective:400px}
+.die{width:var(--ds);height:var(--ds);position:relative;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.2,.8,.3,1);margin:5px}
+.die i{position:absolute;inset:0;background:var(--dc,#fff8e8);border-radius:18%;box-shadow:inset 0 0 0 2px #0002,inset 0 -6px 10px #0001;display:flex;align-items:center;justify-content:center;font:900 calc(var(--ds)*.62) Rubik;font-style:normal;backface-visibility:hidden}
+#roll{font-size:20px;padding:10px 22px;min-width:120px}
+#side{display:flex;flex-direction:column;gap:10px;min-width:0}
+#strip{display:flex;gap:8px;flex-wrap:wrap}
+.rc{display:flex;align-items:center;gap:6px;background:#111;border-radius:12px;padding:4px 10px 4px 4px;border:2px solid var(--c);font-weight:600;font-size:13px;cursor:pointer;position:relative}
+.rc .tk{height:34px}.rc.out{opacity:.4;text-decoration:line-through}.rc.trip .tk{transform:rotate(80deg) translateX(-3px)}
+.rc .st{font:800 10px Rubik;letter-spacing:.05em;background:#fff;color:#111;border-radius:6px;padding:1px 5px}
+#log{list-style:none;margin:0;padding:10px 14px;font-size:13px;color:#ccc;max-height:142px;overflow:auto}
+#log li{padding:3px 0;border-bottom:1px solid #fff1}#log li:first-child{color:#fff;font-weight:600}
+#log .tag{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c,#888);margin-right:7px}
+/* overlays */
+#md,#pv,#mnu,#help{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:20;overflow:auto;padding:16px}
+#md.on{display:flex}#pv{z-index:25}#mnu,#help{z-index:45}#mnu.on,#help.on{display:flex}
+.box{padding:22px;max-width:min(96vw,1060px);max-height:calc(100dvh - 40px);overflow:auto;text-align:center;animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
+.box p{color:#ddd}
+.hand{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.cw{display:flex;flex-direction:column;align-items:center;gap:8px}
+.cw .own{font-weight:900;color:var(--c)}
+/* cards: front = real card art, back = readable power text */
+.fc{width:176px;height:246px;perspective:900px;cursor:pointer;text-align:left}
+.fci{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+.fc.flip .fci{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden;box-shadow:0 10px 18px #0007}
+.face.front img{width:100%;height:100%;display:block}
+.fc:hover .face.front{box-shadow:0 14px 24px #000a}
+.face.back{transform:rotateY(180deg);background:#232323;border:6px solid #232323;display:flex;flex-direction:column}
+.face.back .bk{flex:1;background:var(--cream);color:#111;border-radius:7px;box-shadow:inset 0 0 0 3px var(--cc),inset 0 0 0 5px #fff,inset 0 0 0 7px var(--cc);padding:12px 12px 10px;display:flex;flex-direction:column;gap:5px;text-align:center}
+.face.back .ch{font-weight:900;font-size:19px;line-height:1.05}
+.face.back .pill{align-self:center;background:var(--cc)}
+.face.back p{margin:0;font-size:13px;font-weight:600;line-height:1.3;color:#111;overflow:auto}
+.face.back .stars{white-space:normal;font-size:13px;line-height:1.2}.face.back .stars small{display:block;margin:0}
+.face.back i{font-size:11px;color:#666;margin-top:auto}
+.stars{color:#f0a400;letter-spacing:1px;font-size:15px;white-space:nowrap}.stars small{font:600 10px Rubik;color:#777;letter-spacing:0;margin-right:4px;text-transform:uppercase}
+/* setup */
+#setup{width:min(1000px,96vw);text-align:center}
+.frm{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.frm label{display:flex;flex-direction:column;font-size:13px;font-weight:600;color:#bbb;gap:5px;text-align:left}
+select{font:600 17px Rubik,sans-serif;padding:10px 12px;border-radius:12px;border:2px solid #fff;background:#222;color:#fff;min-width:140px}
+#sinfo{min-height:40px;font-size:14px;color:#ccc;max-width:720px;margin:0 auto}
+.cols{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+.col{background:#1d1d1d;border:3px solid var(--c);border-radius:14px;padding:8px;width:148px;cursor:pointer;opacity:.75}
+.col.act{opacity:1;box-shadow:0 0 0 3px #fff}.col .hd{color:var(--c);font-size:17px;margin:0 0 4px}
+.sb{padding:5px 10px;font-size:14px}
+.slot{display:flex;align-items:center;gap:5px;font-size:13px;height:36px;background:#2a2a2a;border-radius:9px;margin-top:5px;padding:0 6px;overflow:hidden;white-space:nowrap}
+.slot .tk{height:30px}.slot.e{opacity:.4;justify-content:center}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin:10px 0;text-align:center}
+.tile{background:#1d1d1d;border-radius:12px;padding:6px 4px;cursor:pointer;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;border:3px solid transparent;line-height:1.1}
+.tile .tk{height:58px}.tile:hover{background:#2a2a2a}.tile.tk2{opacity:.45;border-color:var(--c)}
+.tile .stars{font-size:10px}
+.sticky{position:sticky;bottom:-22px;background:#111;padding:10px 0 4px;margin:0 -4px}
+.res{display:flex;flex-direction:column;gap:6px;margin:12px auto;width:min(280px,100%)}.res .pl{justify-content:flex-start;font-size:16px;padding:8px 12px}.res .pl b{margin-left:auto}.res .pl.win{background:var(--y);color:#111;border-color:#111}.res .rk{font-weight:900;width:18px}
+#mnu .box,#help .box{width:min(440px,94vw);text-align:left}
+#mnu .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0;flex-wrap:wrap}
+.seg{display:flex;border:2px solid #fff;border-radius:12px;overflow:hidden}
+.seg button{border:0;border-radius:0;box-shadow:none;background:#222;color:#fff;padding:8px 12px;font-size:14px}
+.seg button.on{background:var(--y);color:#111}.seg button:active{transform:none}
+#help li{margin:6px 0;color:#ddd}#help b{color:#fff}
+/* ---------- phone portrait: board turned on its side, HUD beside it ---------- */
+body.rot #game{padding:8px 10px calc(8px + var(--safe));gap:8px}
+body.rot #top .logo{height:22px}body.rot .pl{font-size:12px;padding:3px 7px 3px 4px}body.rot .pl b{font-size:15px}body.rot .pl .dot{height:18px;width:9px}
+body.rot #chips{display:none}
+body.rot #top{flex-wrap:wrap;gap:6px 8px}body.rot #menuBtn{margin-left:auto;padding:5px 8px}body.rot #sc{order:3;width:100%;margin:0;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;gap:6px}
+body.rot #stage{flex-direction:row;align-items:flex-start;gap:10px}
+body.rot #hud{display:flex;flex-direction:column;gap:10px;flex:1;min-width:0}
+body.rot #turn{flex-direction:column;align-items:stretch;padding:10px;min-height:0;gap:10px}
+body.rot .who{font-size:16px}body.rot .rcr{flex-direction:column;align-items:flex-start;gap:4px}body.rot .rcr .tk{height:52px}body.rot .rcr p{font-size:12px}
+body.rot .dierow{flex-direction:row;justify-content:space-between}
+body.rot #roll{min-width:0;flex:1;padding:10px 8px;font-size:17px}
+body.rot{--ds:54px}
+body.rot #strip{gap:5px}body.rot .rc{font-size:0;padding:3px;gap:0}body.rot .rc .st{font-size:9px;position:absolute;bottom:-6px;right:-4px}
+body.rot #log{max-height:120px;font-size:12px;padding:8px 10px}
+body.rot .racebar{display:block}
+.racebar{display:none;font-size:12px;font-weight:600;padding:8px 10px}
+/* short landscape screens */
+@media (max-height:520px) and (orientation:landscape){
+ #game{gap:6px;padding-top:6px}#top .logo{height:22px}#chips{display:none}
+ #hud{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}#turn{min-height:0;padding:8px 12px}.rcr .tk{height:46px}.rcr p{font-size:12px}
+ :root{--ds:52px}#log{max-height:84px}
+}
+@media (max-width:760px){#hud{grid-template-columns:1fr}.fc{width:min(39vw,176px);height:calc(min(39vw,176px)*1.4)}.hand{gap:10px}h2{font-size:21px}.box{padding:16px}}
+@media (prefers-reduced-motion:reduce){.box{animation:none}.fci{transition:none}}
 </style></head><body>
-<header><h1>MAGICAL ATHLETE</h1><div id="sc"></div></header>
-<div id="chips"></div><div id="wrap"><div id="board"></div></div>
-<section id="ctl"><div class="scene"><div class="die" id="die"></div></div><div id="info"></div><button id="roll" style="display:none"></button><button id="pw" onclick="powers()">📖 Powers</button><div id="spd">Speed:<button data-s="1.7">🐢 Slow</button><button data-s="1" class="on">▶ Normal</button><button data-s="0.45">⚡ Fast</button><button id="mu">🔊</button></div></section>
-<div id="strip"></div><ul id="log"></ul><div id="md"></div><div id="pv"></div>
+<div id="title">
+ <img class="art" src="assets/boxart.webp" alt="Magical Athlete">
+ <div class="tag">A racing game of pure chaos</div>
+ <div class="menu">
+  <button id="tPlay">Play</button>
+  <button class="sec" id="tHelp">How to Play</button>
+  <button class="sec" id="tSet">Settings</button>
+ </div>
+ <small>Fan-made digital version for personal play. Magical Athlete and its art belong to their creators.</small>
+</div>
+<div id="game">
+ <header id="top"><img class="logo" src="assets/logo.webp" alt="Magical Athlete"><div id="sc"></div><button id="menuBtn" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></header>
+ <div id="chips"></div>
+ <main id="stage">
+  <div id="wrap"><div id="board"></div></div>
+  <section id="hud">
+   <div id="turn" class="panel"><div id="info"></div><div class="dierow"><div class="scene"><div class="die" id="die"></div></div><button id="roll" style="display:none"></button></div></div>
+   <div id="side"><div class="panel racebar" id="rbar"></div><div id="strip"></div><ul id="log" class="panel"></ul></div>
+  </section>
+ </main>
+</div>
+<div id="md"></div><div id="pv"></div>
+<div id="mnu"><div class="box"><h2>Menu</h2>
+ <div class="row"><b>Speed</b><div class="seg" id="spd"><button data-s="1.7">Slow</button><button data-s="1" class="on">Normal</button><button data-s="0.45">Fast</button></div></div>
+ <div class="row"><b>Sound</b><div class="seg"><button id="mu" class="on">On</button></div></div>
+ <div class="bt" style="justify-content:flex-start"><button id="pw" class="sec">Racer powers</button><button class="sec" id="mHelp">How to play</button><button class="sec" id="mQuit">Quit to title</button></div>
+ <div class="bt"><button id="mClose">Close</button></div></div></div>
+<div id="help"><div class="box"><h2>How to play</h2><ul>
+ <li>Each player gets <b>4 racers</b>. There are <b>4 races</b>, alternating between the <b>Mild Mile</b> and the <b>Wild Wilds</b>.</li>
+ <li>Before each race, every player secretly picks one racer they haven’t raced yet.</li>
+ <li>On your turn, roll the die and move that many spaces: your <b>main move</b>. Every racer has a power that bends the rules. Tap a card to flip it and read it.</li>
+ <li>The first racer to cross the finish takes the <span class="chip au">G</span> gold chip, the second takes the <span class="chip ag">S</span> silver chip. Chips get bigger each race.</li>
+ <li>On the Wild Wilds, <b>stars</b> give a <span class="chip cu">B</span> bronze chip, <b>arrows</b> move you, and <b>TRIP!</b> spaces knock you over. A tripped racer skips their next main move to get back up.</li>
+ <li>After 4 races, the player with the most points wins.</li></ul>
+ <div class="bt"><button id="hClose">Got it</button></div></div></div>
 <script>
 let SPD=1,AC,MUTE=0;const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms*SPD));
 // Fresh OS entropy on every call (crypto RNG, unbiased rejection sampling): never the same sequence twice, not seedable or predictable.
@@ -72,7 +214,7 @@ gunk:{n:'Gunk',c:'#9acd32',o:'#4a6a10',t:'A bit of a hugger.',p:'GOOP ’EM',d:'
 hare:{n:'Hare',c:'#4fb6f0',o:'#1c5f8f',t:'The only thing he can’t outrun is hubris.',p:'HUBRIS',d:'I get +2 to my main move. When I start my turn alone in the lead, I skip my main move.',x:'<ellipse cx="20" cy="-2" rx="6" ry="14" fill="#4fb6f0" stroke="#1c5f8f" stroke-width="3"/><ellipse cx="40" cy="-2" rx="6" ry="14" fill="#4fb6f0" stroke="#1c5f8f" stroke-width="3"/>'},
 legs:{n:'Legs',c:'#ffb3d9',o:'#c03a8a',t:'Has arms, too, but who cares.',p:'JOG',d:'I can skip rolling for my main move and move 5 instead.',x:'<path d="M6 70h48M6 78h48" stroke="#c03a8a" stroke-width="3"/>'},
 lackey:{n:'Lackey',c:'#f5a31c',o:'#8a4a00',t:'If you’re happy, he’s happy.',p:'VERY GOOD SIRE',d:'When another racer rolls a 6 for their main move, I move 2 first.',x:'<path d="M30 66L18 58v16zM30 66l12-8v16z" fill="#e33"/>'},
-loser:{n:'Loveable Loser',c:'#c9a0dc',o:'#5b2c7a',t:'Top of her class at Loser Academy. Which is bad.',p:'D’AWW',d:'At the start of my turn, I get 1 point chip if I’m alone in last place.',x:'<circle cx="14" cy="50" r="3.5" fill="#3af"/>'},
+loser:{n:'Lovable Loser',c:'#c9a0dc',o:'#5b2c7a',t:'Top of her class at Loser Academy. Which is bad.',p:'D’AWW',d:'At the start of my turn, I get 1 point chip if I’m alone in last place.',x:'<circle cx="14" cy="50" r="3.5" fill="#3af"/>'},
 cheer:{n:'Cheerleader',c:'#ff7ab8',o:'#a01c64',t:'A being of pure pep.',p:'RAH RAH',d:'At the start of my turn, I make the racers in last place move 2. If I do, I move 1.',x:'<circle cx="6" cy="62" r="8" fill="#ffe14a"/><circle cx="54" cy="62" r="8" fill="#ffe14a"/>'},
 inch:{n:'Inchworm',c:'#ff8fd0',o:'#6a2ea8',t:'Give her an inch and she’ll take an inch.',p:'WRIGGLE',d:'When another racer rolls a 1 for their main move, they skip that move and I move 1.',x:'<circle cx="30" cy="72" r="6" fill="#6a2ea8"/><circle cx="14" cy="78" r="5" fill="#6a2ea8"/>'},
 rocket:{n:'Rocket Scientist',c:'#e8e8f0',o:'#d33',t:'Moonlights as a brain surgeon.',p:'KABLOOEY',d:'I roll THEN decide whether to double my main move roll. When I do, I trip.',x:'<path d="M30-14L40 6H20z" fill="#d33"/>'},baba:{n:'Baba Yaga',c:'#9c6bd6',o:'#3b1a66',t:'This property is going fast.',p:'LEG IT',d:'Trip any racer that stops on my space, or when I stop on theirs.',x:'<path d="M8 12Q30-20 52 12z" fill="#3b1a66"/>'},
@@ -99,37 +241,53 @@ skip:{n:'Skipper',c:'#3a7bd5',o:'#0d2a5a',t:'The wheel is fake, he just goes for
 suck:{n:'Suckerfish',c:'#6bbfd9',o:'#0b5a7a',t:'Has abandonment issues.',p:'SUCKER!',d:'When a racer starts a move on my space, I can move with them.',x:'<path d="M30-14l10 18H20z" fill="#0b5a7a"/><circle cx="48" cy="56" r="4" fill="#fff"/>'},
 twin:{n:'Twin',c:'#f4b6e8',o:'#8a3a7a',t:'Not related to anyone, just identical to everyone.',p:'DOUBLE DIP',d:'Before my race, I can pick a racer who won a previous race and race with their powers.',x:'<circle cx="47" cy="72" r="7" fill="#fff" stroke="#8a3a7a" stroke-width="2"/>'}
 };
-const pawn=(id,w=46)=>{const r=R[id];return `<svg viewBox="0 -16 60 106" width="${w}"><path d="M6 88V32Q6 4 30 4T54 32V88Z" fill="${r.c}" stroke="${r.o}" stroke-width="5" stroke-linejoin="round"/><circle cx="22" cy="34" r="8" fill="#fff"/><circle cx="40" cy="34" r="8" fill="#fff"/><circle cx="24" cy="36" r="3.5" fill="#222"/><circle cx="38" cy="36" r="3.5" fill="#222"/><path d="M20 54Q31 66 42 54" stroke="#222" stroke-width="3" fill="none"/>${r.x}</svg>`};
+const pawn=(id,ht=60)=>`<img class="tk" src="assets/tokens/${id}.webp" style="height:${ht}px" alt="${R[id].n}" draggable="false">`;
+const IC={cpu:'<svg class="ic" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M2 13v2M22 13v2"/></svg>',hum:'<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>'};
+const noemo=t=>String(t).replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F000}-\u{1F2FF}]\uFE0F?/gu,'').replace(/^\s+/,'');
 const STAR={alch:1,banana:1,centaur:1,coach:1,gunk:1,hare:2,legs:1,lackey:2,loser:1,cheer:2,inch:2,rocket:2,baba:2,romantic:3,third:3,hypno:3,flip:3,magic:2,genius:3,party:4,stickler:3,blimp:2,heckler:3,mouth:2,copy:4,dice:4,duel:4,egg:5,baby:4,leap:3,mind:4,scooch:5,sisy:3,skip:5,suck:5,twin:5};
 const stars=id=>'★'.repeat(STAR[id]||3)+'☆'.repeat(5-(STAR[id]||3));
-const card=(id,pk)=>{const r=R[id],b=pk?`<button data-pick="${id}">✔ Pick</button>`:'';return `<div class="fc" data-id="${id}"><div class="fci"><div class="face" style="--cc:${r.o}"><div class="ch">${r.n}</div><div class="art" style="background:${r.c}55">${pawn(id,78)}</div><div class="stars" title="Complexity">${stars(id)}</div><i>${r.t}</i>${b}</div><div class="face back" style="--cc:${r.o}"><div class="ch">${r.n}</div><div class="art" style="background:${r.c}55">${pawn(id,46)}</div><b>${r.p}</b><p>${r.d}</p><div class="stars">${stars(id)} <small>complexity</small></div>${b}</div></div></div>`};
+const card=(id,pk)=>{const r=R[id];return `<div class="cw"><div class="fc" data-id="${id}"><div class="fci"><div class="face front"><img src="assets/cards/${id}.webp" alt="${r.n} card" draggable="false"></div><div class="face back" style="--cc:${r.c}"><div class="bk"><div class="ch">${r.n}</div><span class="pill">${r.p}</span><p>${r.d}</p><div class="stars"><small>Complexity</small>${stars(id)}</div><i>${r.t}</i></div></div></div></div>${pk?`<button data-pick="${id}" aria-label="Pick ${r.n}">Pick</button>`:''}</div>`};
 const pname=(ai,i)=>{const hu=ai.slice(0,i+1).filter(x=>!x).length;return ai[i]?'CPU '+(i+1-hu):'Player '+hu};
 document.addEventListener('click',e=>{const c=e.target.closest&&e.target.closest('.fc');if(c&&!e.target.closest('button'))c.classList.toggle('flip')});
 const PC=['#f5a7d6','#fecc3a','#f58a1f','#a6d4ea','#c9a0dc','#f3ecdc'],NC=['#f27fe0','#fbb31c','#f58a1f','#2f9bf2','#b57be8','#4cd07d'];
-const modal=(h,b)=>new Promise(res=>{const m=$('#md');m.className='on';m.innerHTML=`<div class="box">${h}<div class="bt">${b.map((t,i)=>`<button data-i="${i}">${t}</button>`).join('')}</div></div>`;m.onclick=e=>{const i=e.target.dataset.i;if(i!=null){m.className='';m.innerHTML='';res(+i)}}});
+const modal=(h,b)=>new Promise(res=>{const m=$('#md');m.className='on';m.innerHTML=`<div class="box">${noemo(h)}<div class="bt">${b.map((t,i)=>`<button data-i="${i}"${b.length>2?' class="sec"':''}>${noemo(t)}</button>`).join('')}</div></div>`;m.onclick=e=>{const i=e.target.dataset.i;if(i!=null){m.className='';m.innerHTML='';res(+i)}}});
 const tn=(f,g,d,at=0,ty='sine',v=.1)=>{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime+at,o=AC.createOscillator(),a=AC.createGain();o.type=ty;o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(g,t+d);a.gain.setValueAtTime(v,t);a.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(a);a.connect(AC.destination);o.start(t);o.stop(t+d+.02)};
 const sfx=k=>{if(MUTE)return;try{AC&&AC.resume();({hop:()=>tn(380,640,.1,0,'sine',.07),trip:()=>{tn(750,90,.45,0,'triangle',.18);tn(120,40,.25,.42,'sine',.35)},star:()=>{tn(880,890,.12,0,'square',.05);tn(1320,1330,.2,.1,'square',.05)},win:()=>[523,659,784,1047].forEach((f,i)=>tn(f,f+1,.18,i*.1,'triangle',.12))})[k]()}catch(e){}};
-let G;const log=t=>{const l=$('#log');l.insertAdjacentHTML('afterbegin',`<li>${t}</li>`);while(l.children.length>7)l.lastChild.remove()};
+let G;const log=t=>{const l=$('#log'),c=G&&G.cur?own(G.cur).col:'#888';l.insertAdjacentHTML('afterbegin',`<li><span class="tag" style="--c:${c}"></span>${noemo(t)}</li>`);while(l.children.length>30)l.lastChild.remove()};
 const alive=()=>G.rs.filter(r=>!r.fin&&!r.out),own=r=>G.pl[r.o],base=r=>r.as||r.id,nm=r=>`${R[r.id].n}${r.as?'→'+R[r.as].n:''} (${own(r).n})`;
 const eid=r=>{let id=base(r);if(id=='copy'){const al=alive(),m=Math.max(...al.map(o=>o.pos)),c=al.filter(o=>o.pos==m&&o!==r&&base(o)!='copy');id=c.length?base(c[0]):'copy'}return id};
 const has=(id,ex)=>alive().filter(o=>o!==ex&&eid(o)==id),dec=(r,h,b,ai)=>own(r).ai?Promise.resolve(ai()):modal(h,b);
-const cardO=r=>`<div><b style="color:${own(r).col}">${own(r).n}</b>${card(base(r))}${r.as?`<small>(${R[r.id].n})</small>`:''}</div>`;
+const cardO=r=>`<div class="cw" style="--c:${own(r).col}"><span class="own">${own(r).n}</span>${card(base(r))}${r.as?`<small>as ${R[r.id].n}</small>`:''}</div>`;
 function powers(){if(!G||!G.rs.length||$('#md').className=='on')return;modal(`<h2>Racer powers</h2><div class="hand">${G.rs.map(cardO).join('')}</div>`,['Close'])}
-function fit(){const w=$('#wrap'),b=$('#board'),s=Math.min(1,(innerWidth-24)/1100);b.style.transform=`scale(${s})`;b.style.margin=s<1?'0':'0 auto';w.style.height=b.offsetHeight*s+'px'}
-addEventListener('resize',fit);
+// Board art geometry, in the image's own pixels: x0/y0 = first square's top-left, p/q = column/row pitch, w/h = square size
+const GEO={mild:{img:'assets/board-mild.webp',W:1044,H:326,x0:27.9,p:66.15,w:63,y0:34,q:67.6,h:63,nm:'Mild Mile'},
+ wild:{img:'assets/board-wild.webp',W:900,H:274,x0:24,p:57.07,w:54,y0:22,q:58.3,h:55,nm:'Wild Wilds'}};
+let ROT=false;
+// space i -> [x,y,w,h]: 0 = Start box, 1-12 top row, 13-14 right side, 15-29 bottom row (right to left)
+function cellBox(g,i){if(i==0)return[g.x0,g.y0,2*g.p+g.w,g.h];let row,col;if(i<=12){row=0;col=i+2}else if(i<=14){row=i-12;col=14}else{row=3;col=29-i}return[g.x0+col*g.p,g.y0+row*g.q,g.w,g.h]}
+function fit(){const g=GEO[G.board],b=$('#board'),w=$('#wrap');let s;
+ if(ROT){const avW=Math.max(150,innerWidth-20-10-168),avH=innerHeight-$('#top').offsetHeight-28;s=Math.min(avW/g.H,avH/g.W);
+  w.style.width=g.H*s+'px';w.style.height=g.W*s+'px';b.style.transform=`translateX(${g.H*s}px) rotate(90deg) scale(${s})`}
+ else{const avW=Math.min(innerWidth-32,1180),avH=innerHeight<520?innerHeight-$('#top').offsetHeight-150:innerHeight*.62;s=Math.min(avW/g.W,avH/g.H,1.2);
+  w.style.width=g.W*s+'px';w.style.height=g.H*s+'px';b.style.transform=`scale(${s})`}}
+addEventListener('resize',()=>{if(G&&G.board)render()});
 function trip(r){if(r.trip||r.fin||r.out)return;r.trip=1;r.fallAt=Date.now();sfx('trip')}
-const psp=(r,w)=>{const el=Date.now()-(r.fallAt||0),fl=r.trip&&el<650*SPD;return `<span class="pw ${G.hop===r?(G.big?'hop big':'hop'):''} ${r.trip?(fl?'fall':'tr'):''}"${fl?` style="animation-delay:-${el}ms"`:''}>${pawn(r.id,w)}</span>`};
-const ar=(i,a)=>{const f=i<=12?'→':i<=14?'↓':'←';return a>0?f:{'→':'←','←':'→','↓':'↑'}[f]};
+const psp=(r,ht)=>{const el=Date.now()-(r.fallAt||0),fl=r.trip&&el<650*SPD;return `<span class="pw ${G.hop===r?(G.big?'hop big':'hop'):''} ${r.trip?(fl?'fall':'tr'):''} ${G.cur===r?'me':''}"${fl?` style="animation-delay:-${el}ms"`:''}>${pawn(r.id,ht)}</span>`};
+function cellH(x,y,w,h,inner){return `<div class="cell" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><div class="ci" style="width:${ROT?h:w}px;height:${ROT?w:h}px${ROT?';transform:rotate(-90deg)':''}">${inner}</div></div>`}
 function render(){
- const wild=G.board=='wild',al=alive();$('#board').style.setProperty('--hd',.26*SPD+'s');$('#board').style.setProperty('--fd',.65*SPD+'s');
- let h=`<div class="start"><span>START</span>${al.filter(r=>r.pos==0).map(r=>psp(r,28)).join('')}</div><div class="fin">🏁<br>FINISH${G.placed.map((r,i)=>`<div>${['🥇','🥈'][i]}${pawn(r.id,26)}</div>`).join('')}</div><div class="mid" style="--gr:${wild?'#6b3fb0':'#4a9b3c'}">${wild?'WILD WILDS':'MILD MILE'}</div>`;
- for(let i=1;i<FIN;i++){let row,col;if(i<=12){row=1;col=i+3}else if(i<=14){row=i-11;col=15}else{row=4;col=30-i}
-  const s=wild&&WILD[i],k=wild?WCOL[i]:'rpygb'[i%5],lab=wild?(s?(s.s?'★1':s.t?'TRIP!':ar(i,s.a)+Math.abs(s.a)):''):(i%5==0?i:''),on=al.filter(r=>r.pos==i),w=on.length>3?20:on.length>1?28:36;
-  h+=`<div class="sq" style="grid-area:${row}/${col};background:${COL[k]}">${lab!==''?`<span class="ic" style="font-size:${String(lab).length>3?19:36}px">${lab}</span>`:''}${on.map(r=>psp(r,w)).join('')}</div>`}
- $('#board').innerHTML=h;fit();
- $('#sc').innerHTML=G.pl.map(p=>`<div class="pl" style="--c:${p.col}">${p.n}${p.ai?' 🤖':''}<br><b>${p.pts}</b> pts</div>`).join('');
- $('#chips').innerHTML='<span class="hd">Prize chips:</span>'+[0,1,2,3].map(i=>`<div class="cp${i==G.n?' cur':''}">Race ${i+1} · ${i%2?'Wild':'Mild'}<br>🥇 ${GOLD[i]} &nbsp; 🥈 ${SIL[i]}</div>`).join('');
- $('#strip').innerHTML=G.rs.map(r=>`<div class="rc" style="--c:${own(r).col}" onclick="powers()">${pawn(r.id,22)}${R[r.id].n}${r.trip?' 🌀':''}${r.fin?' #'+r.fin:''}${r.out?' ❌':''}</div>`).join('')}
+ ROT=innerWidth<700&&innerHeight>innerWidth*1.15;document.body.classList.toggle('rot',ROT);
+ const g=GEO[G.board],al=alive(),b=$('#board');b.style.setProperty('--hd',.26*SPD+'s');b.style.setProperty('--fd',.65*SPD+'s');
+ b.style.width=g.W+'px';b.style.height=g.H+'px';b.style.backgroundImage=`url(${g.img})`;
+ let h='';
+ for(let i=0;i<FIN;i++){const on=al.filter(r=>r.pos==i);if(!on.length)continue;const[x,y,w,hh]=cellBox(g,i),n=on.length;
+  const ht=i==0?(ROT?.8:.88)*hh:hh*(n==1?.94:n==2?.8:n<=4?.5:.42);h+=cellH(x,y,w,hh,on.map(r=>psp(r,ht)).join(''))}
+ G.placed.forEach((r,k)=>{h+=cellH(g.x0,g.y0+(k+1)*g.q,g.w,g.h,psp(r,g.h*.9))});
+ b.innerHTML=h;fit();
+ $('#sc').innerHTML=G.pl.map(p=>`<div class="pl" style="--c:${p.col}"><span class="dot"></span>${p.n}<b>${p.pts}</b></div>`).join('');
+ const chip=i=>`<span class="chip au">${GOLD[i]}</span><span class="chip ag">${SIL[i]}</span>`;
+ $('#chips').innerHTML=[0,1,2,3].map(i=>`<div class="cp${i==G.n?' cur':i<G.n?' done':''}"><span class="n">${i+1}</span>${i%2?'Wild Wilds':'Mild Mile'} ${chip(i)}</div>`).join('');
+ $('#rbar').innerHTML=`Race ${Math.min(G.n+1,4)} of 4 · ${g.nm} &nbsp;${chip(Math.min(G.n,3))}`;
+ $('#strip').innerHTML=G.rs.map(r=>`<div class="rc${r.out?' out':''}${r.trip?' trip':''}" style="--c:${own(r).col}" onclick="powers()" title="${R[r.id].n} (${own(r).n})">${pawn(r.id,34)}<span>${R[r.id].n}</span>${r.fin?`<span class="st">${r.fin==1?'1ST':'2ND'}</span>`:r.out?'<span class="st">OUT</span>':r.trip?'<span class="st">TRIPPED</span>':''}</div>`).join('')}
 const F={1:[0,0],2:[0,-90],5:[0,90],6:[0,180],3:[-90,0],4:[90,0]};let cum=0;
 async function rollDie(p){const v=rnd(6)+1,d=$('#die');d.style.setProperty('--dc',p.dc);d.style.transitionDuration=SPD+'s';cum+=720;const[x,y]=F[v];d.style.transform=`rotateX(${x+cum}deg) rotateY(${y+cum}deg)`;await sleep(1100);return v}
 function checkEnd(){if(G.placed.length>=2)G.over=1;else if(alive().length<=1){const l=alive()[0];if(l){l.fin=G.placed.length+1;G.placed.push(l)}G.over=1}}
@@ -172,9 +330,9 @@ async function land(r,n=0,tog=[]){if(lpg())return;if(r.fin||r.out||G.over||n>8)r
   if(s.a){log(`${nm(r)} follows the arrow (${s.a>0?'+':''}${s.a})`);await mv(r,s.a);await land(r,n+1)}}
  for(const x of rd)await land(x,n+1,[r,...rd.filter(y=>y!==x)])}
 async function tin(r){const p=own(r),sp=r.pos;render();const E0=eid(r);
- $('#info').innerHTML=`<span class="hd" style="font-size:26px;color:${p.col}">${p.n}${p.ai?' 🤖':''}</span><br>${pawn(r.id,40)} <b>${R[r.id].n}${r.as?' → '+R[r.as].n:''}</b>: ${R[E0].p}<br><small>${R[E0].d}</small>`;
+ G.cur=r;$('#info').innerHTML=`<div class="who" style="--c:${p.col}">${p.ai?IC.cpu:IC.hum}${p.n}</div><div class="rcr">${pawn(r.id,64)}<div><div class="nm">${R[r.id].n}${r.as?' as '+R[r.as].n:''}</div><span class="pill">${R[E0].p}</span><p>${R[E0].d}</p></div></div>`;render();
  const rs=alive(),mn=Math.min(...rs.map(o=>o.pos)),mx=Math.max(...rs.map(o=>o.pos)),bt=$('#roll');
- if(p.ai)await sleep(750);else{bt.style.display='';bt.textContent=r.trip?'Recover (skip move)':'ROLL!';await new Promise(ok=>bt.onclick=ok);bt.style.display='none'}
+ if(p.ai)await sleep(750);else{bt.style.display='';bt.textContent=r.trip?'Get up':'Roll';await new Promise(ok=>bt.onclick=ok);bt.style.display='none'}
  const e=eid(r);
  if(e=='mind'&&r.mm===undefined){const o=alive(),i=await dec(r,'<h2>Mastermind</h2>Predict the winner!',o.map(nm),()=>rnd(o.length));r.mm=o[i];log(`🕵️ ${nm(r)} predicts ${nm(o[i])} will win`);await fire(r)}
  if(e=='loser'&&r.pos==mn&&rs.filter(o=>o.pos==mn).length==1){p.pts++;log(`💜 ${nm(r)} collects a point chip`);await fire(r)}
@@ -213,14 +371,14 @@ async function tin(r){const p=own(r),sp=r.pos;render();const E0=eid(r);
  await land(r);return ex}
 async function turn(r){const s=r.pos,x=await tin(r);
  if(!r.fin&&!r.out&&!G.over&&Math.abs(r.pos-s)<=1)for(const h of has('heckler',r)){log(`📢 Heckler mocks ${nm(r)}: +2!`);await mv(h,2);await land(h)}return x}
-const pick=(t,ids)=>new Promise(res=>{const m=$('#md');m.className='on';m.innerHTML=`<div class="box"><h2>${t}</h2><div class="hand">${ids.map(id=>card(id,1)).join('')}</div><p style="font-size:13px;color:#cbc">Tap a card to flip it and read the power. Press Pick to choose it.</p></div>`;m.onclick=e=>{const b=e.target.closest('[data-pick]');if(b){m.className='';m.innerHTML='';res(b.dataset.pick)}}});
+const pick=(t,ids)=>new Promise(res=>{const m=$('#md');m.className='on';m.innerHTML=`<div class="box"><h2>${noemo(t)}</h2><div class="hand">${ids.map(id=>card(id,1)).join('')}</div><p style="font-size:13px">Tap a card to flip it and read the power.</p></div>`;m.onclick=e=>{const b=e.target.closest('[data-pick]');if(b){m.className='';m.innerHTML='';res(b.dataset.pick)}}});
 async function race(){G.over=0;G.tc=0;G.ch=0;G.best=0;G.sk=null;G.placed=[];G.rs=[];G.board=G.n%2?'wild':'mild';$('#log').innerHTML='';render();
  const picks=[];for(let i=0;i<G.pl.length;i++){const p=G.pl[i];let id;
-  if(p.ai)id=p.hand[rnd(p.hand.length)];else{await modal(`<h2>${p.n}</h2>Pass the device: only ${p.n} should look!`,[`I’m ${p.n}`]);id=await pick(`${p.n}: choose your racer`,p.hand)}
+  if(p.ai)id=p.hand[rnd(p.hand.length)];else{if(G.pl.filter(q=>!q.ai).length>1)await modal(`<h2>${p.n}</h2>Pass the device: only ${p.n} should look!`,[`I’m ${p.n}`]);id=await pick(`${p.n}: choose your racer`,p.hand)}
   p.hand=p.hand.filter(h=>h!=id);picks.push({id,o:i,pos:0,trip:0,fin:0,out:0})}
  G.rs=picks;
  for(const r of picks)if(r.id=='egg'||r.id=='twin'){const pool=r.id=='egg'?G.deck.splice(0,3):[...new Set(G.winners)];
-  if(pool.length){let c;if(own(r).ai)c=pool[rnd(pool.length)];else{await modal(`<h2>${own(r).n}</h2>Pass the device: ${R[r.id].n} power!`,[`I’m ${own(r).n}`]);c=await pick(`${R[r.id].n}: pick a racer to become`,pool)}
+  if(pool.length){let c;if(own(r).ai)c=pool[rnd(pool.length)];else{if(G.pl.filter(q=>!q.ai).length>1)await modal(`<h2>${own(r).n}</h2>Pass the device: ${R[r.id].n} power!`,[`I’m ${own(r).n}`]);c=await pick(`${R[r.id].n}: pick a racer to become`,pool)}
    r.as=c;if(r.id=='egg')G.deck.push(...pool.filter(x=>x!=c));log(`${R[r.id].n} becomes ${R[c].n}`)}else log(`${R[r.id].n} has nobody to copy`)}
  for(const r of picks)if(base(r)=='sisy'){own(r).pts+=4;log('🪨 Sisyphus takes 4 point chips')}
  G.order=picks.map((_,i)=>picks[(i+G.first)%picks.length]);render();
@@ -231,27 +389,27 @@ async function race(){G.over=0;G.tc=0;G.ch=0;G.best=0;G.sk=null;G.placed=[];G.rs
   while(G.sk&&!G.over){const s=G.sk;G.sk=null;if(s.fin||s.out)continue;await take(s);i=G.order.indexOf(s)+1}}
  render();const[a,b]=G.placed;if(a){G.pl[a.o].pts+=GOLD[G.n];G.winners.push(base(a))}if(b)G.pl[b.o].pts+=SIL[G.n];G.winners=G.winners.filter(x=>x!='egg'&&x!='twin');
  const lr=G.rs.filter(r=>!r.fin).sort((x,y)=>x.pos-y.pos)[0]||b||a;G.first=lr.o;G.n++;render();
- await modal(`<h2>Race ${G.n} complete!</h2>${a?`🥇 ${nm(a)} +${GOLD[G.n-1]}`:''}<br>${b?`🥈 ${nm(b)} +${SIL[G.n-1]}`:''}`,['Continue'])}
+ await modal(`<h2>Race ${G.n} complete!</h2><div class="hand">${[a,b].map((x,k)=>x?`<div class="cw" style="--c:${own(x).col}">${pawn(x.id,90)}<span class="own">${k?'2nd':'1st'}: ${own(x).n}</span><span><span class="chip ${k?'ag':'au'}">${k?SIL[G.n-1]:GOLD[G.n-1]}</span> ${R[x.id].n}</span></div>`:'').join('')}</div>`,['Continue'])}
 //SETUP-START
 const setup=()=>new Promise(res=>{
  const ALL=Object.keys(R).sort((a,b)=>R[a].n.localeCompare(R[b].n));
- const MODES={random:['🎲 Luck of the Draw','Everyone is dealt 4 random racers. Fastest way to start.'],draft:['🐍 Snake Draft','Racers are flipped face-up and everyone takes turns picking, then the order reverses. Two rounds gives each player 4 racers. This is the rulebook way.'],choose:['🃏 Hand-Pick','Choose all four racers for every player yourself. Great for trying out combos and testing.']};
+ const MODES={random:['Luck of the Draw','Everyone is dealt 4 random racers. Fastest way to start.'],draft:['Snake Draft','Racers are flipped face-up and everyone takes turns picking, then the order reverses. Two rounds gives each player 4 racers. This is the rulebook way.'],choose:['Hand-Pick','Choose all four racers for every player yourself. Great for trying out combos and testing.']};
  let np=3,hm=1,mode='random',st='home',H=[[],[],[],[],[],[]],ai=[0,1,1,1,1,1],act=0,sel=null,note='';const m=$('#md'),pv=$('#pv');
  const owner=id=>H.findIndex((h,i)=>i<np&&h.includes(id)),nmOf=i=>pname(ai,i);
- const home=()=>`<div class="box" id="setup"><h2 style="font-size:42px;color:var(--y);-webkit-text-stroke:1px var(--r)">MAGICAL ATHLETE</h2><div class="sub">A racing game of pure chaos</div>
+ const home=()=>`<div class="box" id="setup"><h2>New game</h2>
   <div class="frm"><label>Players<select data-s="np">${[2,3,4,5,6].map(n=>`<option${n==np?' selected':''}>${n}</option>`).join('')}</select></label>
   <label>Humans<select data-s="hm">${[...Array(np+1)].map((_,i)=>`<option${i==hm?' selected':''}>${i}</option>`).join('')}</select></label>
   <label>Game type<select data-s="mode">${Object.entries(MODES).map(([k,v])=>`<option value="${k}"${k==mode?' selected':''}>${v[0]}</option>`).join('')}</select></label></div>
-  <div id="sinfo">${MODES[mode][1]}<br><small>The rest of the seats are 🤖 CPU players.</small></div>
-  <div class="bt"><button data-a="${mode=='choose'?'next':'go'}">${mode=='choose'?'Next: pick racers ▶':'▶ Start game'}</button></div></div>`;
+  <div id="sinfo">${MODES[mode][1]}<br><small>The other seats are CPU players.</small></div>
+  <div class="bt"><button class="sec" data-a="title">Back</button><button data-a="${mode=='choose'?'next':'go'}">${mode=='choose'?'Next: pick racers':'Start game'}</button></div></div>`;
  const pickr=()=>`<div class="box" id="setup"><h2>Hand-Pick racers</h2>
-  <div class="cols">${[...Array(np)].map((_,i)=>`<div class="col${i==act?' act':''}" style="--c:${NC[i]}" data-a="act" data-v="${i}"><div class="hd">${nmOf(i)}</div><button class="sb on" data-a="ai" data-v="${i}">${ai[i]?'🤖 CPU':'🧑 Human'}</button>${[0,1,2,3].map(k=>{const id=H[i][k];return id?`<div class="slot" data-a="rm" data-v="${id}">${pawn(id,26)}<span>${R[id].n}</span></div>`:`<div class="slot e">empty</div>`}).join('')}</div>`).join('')}</div>
-  <div class="sgrid">${ALL.map(id=>{const o=owner(id);return `<div class="tile${o>=0?' tk':''}" style="${o>=0?`--c:${NC[o]}`:''}" data-a="pk" data-v="${id}">${pawn(id,34)}<span>${R[id].n}</span><span class="stars">${stars(id)}</span></div>`}).join('')}</div>
+  <div class="cols">${[...Array(np)].map((_,i)=>`<div class="col${i==act?' act':''}" style="--c:${NC[i]}" data-a="act" data-v="${i}"><div class="hd">${nmOf(i)}</div><button class="sb on" data-a="ai" data-v="${i}">${ai[i]?IC.cpu+' CPU':IC.hum+' Human'}</button>${[0,1,2,3].map(k=>{const id=H[i][k];return id?`<div class="slot" data-a="rm" data-v="${id}">${pawn(id,30)}<span>${R[id].n}</span></div>`:`<div class="slot e">empty</div>`}).join('')}</div>`).join('')}</div>
+  <div class="sgrid">${ALL.map(id=>{const o=owner(id);return `<div class="tile${o>=0?' tk2':''}" style="${o>=0?`--c:${NC[o]}`:''}" data-a="pk" data-v="${id}">${pawn(id,58)}<span>${R[id].n}</span><span class="stars">${stars(id)}</span></div>`}).join('')}</div>
   <div id="sinfo">${note||'Tap a player column to make them active, then tap a racer to see its card and add it. Tap a slot to remove. Empty slots are filled randomly.'}</div>
-  <div class="bt"><button data-a="back">◀ Back</button><button data-a="rnd">🎲 Fill empty slots</button><button data-a="clr">Clear all</button><button data-a="go">▶ Start game</button></div></div>`;
+  <div class="bt sticky"><button class="sec" data-a="back">Back</button><button class="sec" data-a="clr">Clear all</button><button class="sec" data-a="rnd">Fill empty slots</button><button data-a="go">Start game</button></div></div>`;
  const draw=()=>{m.className='on';m.innerHTML=st=='home'?home():pickr()};
  const closePv=()=>{pv.style.display='none';pv.innerHTML=''};
- const showPv=id=>{sel=id;const o=owner(id);pv.style.display='flex';pv.innerHTML=`<div class="box">${card(id)}<div class="bt">${o>=0?`<button data-p="rm">Remove from ${nmOf(o)}</button>`:`<button data-p="add">Add to ${nmOf(act)}</button>`}<button data-p="x">Close</button></div></div>`;setTimeout(()=>{const c=pv.querySelector('.fc');if(c)c.classList.add('flip')},350)};
+ const showPv=id=>{sel=id;const o=owner(id);pv.style.display='flex';pv.innerHTML=`<div class="box">${card(id)}<div class="bt">${o>=0?`<button data-p="rm">Remove from ${nmOf(o)}</button>`:`<button data-p="add">Add to ${nmOf(act)}</button>`}<button class="sec" data-p="x">Close</button></div></div>`;setTimeout(()=>{const c=pv.querySelector('.fc');if(c)c.classList.add('flip')},350)};
  pv.onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=b.dataset.p;note='';
   if(p=='add'){if(H[act].length<4)H[act].push(sel);else note=nmOf(act)+' already has 4 racers. Tap one of their slots to remove it first.'}
   if(p=='rm')H.forEach((h,i)=>{if(h.includes(sel))H[i]=h.filter(x=>x!=sel)});
@@ -260,6 +418,7 @@ const setup=()=>new Promise(res=>{
  m.onclick=e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,v=t.dataset.v;
   if(a=='next'){ai=[...Array(6)].map((_,i)=>i>=hm?1:0);if(act>=np)act=np-1;for(let i=np;i<6;i++)H[i]=[];st='pick'}
   else if(a=='back')st='home';
+  else if(a=='title'){$('#title').classList.remove('off');return}
   else if(a=='act')act=+v;
   else if(a=='ai')ai[+v]=ai[+v]?0:1;
   else if(a=='rm')H.forEach((h,i)=>{if(h.includes(v))H[i]=h.filter(x=>x!=v)});
@@ -282,12 +441,17 @@ async function main(){const cf=await setup(),np=cf.np;let hands=cf.hands;
  if(cf.mode=='random'){const ids=shuf(Object.keys(R));hands=[...Array(np)].map((_,i)=>ids.slice(i*4,i*4+4))}
  else if(cf.mode=='draft')hands=await draft(np,cf.ai);
  const used=new Set(hands.flat());
- G={n:0,first:rnd(np),winners:[],deck:shuf(Object.keys(R).filter(x=>!used.has(x)&&x!='egg'&&x!='twin')),pl:[...Array(np)].map((_,i)=>({n:pname(cf.ai,i),ai:!!cf.ai[i],col:NC[i],dc:PC[i],pts:0,hand:hands[i].slice()})),rs:[],placed:[]};
+ G={n:0,first:rnd(np),winners:[],deck:shuf(Object.keys(R).filter(x=>!used.has(x)&&x!='egg'&&x!='twin')),pl:[...Array(np)].map((_,i)=>({n:pname(cf.ai,i),ai:!!cf.ai[i],col:NC[i],dc:PC[i],pts:0,hand:hands[i].slice()})),rs:[],placed:[]};document.body.classList.add('ing');
  while(G.n<4)await race();const m=Math.max(...G.pl.map(p=>p.pts)),w=G.pl.filter(p=>p.pts==m);
- await modal(`<h2>${w.length>1?'It’s a tie!':w[0].n+' wins!'}</h2>${G.pl.map(p=>`${p.n}: ${p.pts} pts`).join('<br>')}`,['Play again']);main()}
-$('#spd').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id=='mu'){MUTE=!MUTE;b.textContent=MUTE?'🔇':'🔊';return}SPD=+b.dataset.s;[...$('#spd').children].forEach(x=>x.classList.toggle('on',x===b))};
-$('#die').innerHTML=[1,2,3,4,5,6].map((n,i)=>`<i style="color:${['#e33','#27d','#2a4','#82c','#2a6','#d28'][i]};transform:${['','rotateY(90deg)','rotateX(90deg)','rotateX(-90deg)','rotateY(-90deg)','rotateY(180deg)'][i]} translateZ(40px)">${n}</i>`).join('');
+ await modal(`<h2>${w.length>1?'It’s a tie!':w[0].n+' wins!'}</h2><div class="res">${[...G.pl].sort((a,b)=>b.pts-a.pts).map((p,k)=>`<div class="pl${p.pts==m?' win':''}" style="--c:${p.col}"><span class="rk">${k+1}</span><span class="dot"></span>${p.n}<b>${p.pts}</b></div>`).join('')}</div>`,['Play again']);main()}
+$('#spd').onclick=e=>{const b=e.target.closest('button');if(!b)return;SPD=+b.dataset.s;[...$('#spd').children].forEach(x=>x.classList.toggle('on',x===b))};
+$('#mu').onclick=()=>{MUTE=!MUTE;$('#mu').textContent=MUTE?'Off':'On';$('#mu').classList.toggle('on',!MUTE)};
+const ov=(id,on)=>$(id).classList.toggle('on',on);
+$('#menuBtn').onclick=()=>ov('#mnu',1);$('#mClose').onclick=()=>ov('#mnu',0);$('#mnu').onclick=e=>{if(e.target.id=='mnu')ov('#mnu',0)};
+$('#pw').onclick=()=>{ov('#mnu',0);powers()};$('#mHelp').onclick=$('#tHelp').onclick=()=>ov('#help',1);$('#hClose').onclick=()=>ov('#help',0);$('#help').onclick=e=>{if(e.target.id=='help')ov('#help',0)};
+$('#mQuit').onclick=()=>location.reload();$('#tSet').onclick=()=>ov('#mnu',1);$('#tPlay').onclick=()=>$('#title').classList.add('off');
+$('#die').innerHTML=[1,2,3,4,5,6].map((n,i)=>`<i style="color:${['#e33','#27d','#2a4','#82c','#2a6','#d28'][i]};transform:${['','rotateY(90deg)','rotateX(90deg)','rotateX(-90deg)','rotateY(-90deg)','rotateY(180deg)'][i]} translateZ(calc(var(--ds) / 2))">${n}</i>`).join('');
 // face order: 1 front,2 right,3 top,4 bottom,5 left,6 back (matches F map)
-$('#die').querySelectorAll('i').forEach((e,i)=>e.style.transform=['','rotateY(90deg)','rotateX(90deg)','rotateX(-90deg)','rotateY(-90deg)','rotateY(180deg)'][i]+' translateZ(40px)');
+$('#die').querySelectorAll('i').forEach((e,i)=>e.style.transform=['','rotateY(90deg)','rotateX(90deg)','rotateX(-90deg)','rotateY(-90deg)','rotateY(180deg)'][i]+' translateZ(calc(var(--ds) / 2))');
 main();
 </script></body></html>

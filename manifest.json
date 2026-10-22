@@ -1,0 +1,13 @@
+{
+  "name": "Magical Athlete",
+  "short_name": "Magical Athlete",
+  "description": "A racing game of pure chaos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#de3f2a",
+  "theme_color": "#de3f2a",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
